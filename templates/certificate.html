@@ -1,0 +1,60 @@
+<html>
+  <style>
+    body {
+      font-size: 3.5em;
+      text-align: center;
+    }
+    h1 {
+      margin-top: -0.5em;
+      color: #3889BF;
+    }
+    .container {
+      margin: 0 2em;
+    }
+    .award {
+      margin: 10em 0 9em 0;
+    }
+    .award .line1 {
+      color: #717172;
+      font-weight: lighter;
+      margin: 0;
+    }
+    .award h2 {
+      margin-top: 0.2em;
+    }
+    .award .cert {
+      font-style: italic;
+    }
+    .score {
+      margin-bottom: 4em;
+    }
+    .cert-info {
+      font-size: 0.9em;
+      text-align: left;
+    }
+    .date {
+      font-size: 0.8em;
+      text-align: right;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <img src="data:image/png;base64,{{ base_64_image }}" />
+
+      <h1>Certified Neo4j Professional</h1>
+      <div class="award">
+        <p class="line1">Presented to:</p>
+        <h2>{{name}}</h2>
+        <p class="cert">Neo Technology certifies you as a Neo4j Professional</p>
+      </div>
+      <p class="score">
+        Test Name: {{ test_name }}
+        <br />
+        Score: {{score_percentage}}% ({{score_absolute}} out of {{ score_maximum }})
+      </p>
+      <p class="cert-info">The holder of this certificate is recognized by Neo Technology Certification for Professional level awareness of Neo4j.</p>
+      <hr />
+      <p class="date">{{ date }}</p>
+    </div>
+  </body>
+</html>
