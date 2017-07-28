@@ -34,9 +34,9 @@ class WKhtmlToPdf(object):
         """
         Render the URL into a pdf and setup the evironment if required.
         """
-        
+
         # execute the command
-        command = 'wkhtmltopdf %s "%s" "%s" >> /tmp/wkhtp.log' % (
+        command = './binary/wkhtmltopdf %s "%s" "%s" >> /tmp/wkhtp.log' % (
                         " ".join([cmd for cmd in self.params]),
                         self.url,
                         self.output_file
