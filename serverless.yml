@@ -6,6 +6,16 @@ provider:
   name: aws
   runtime: python3.6
   timeout: 180
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow
+      Action: 
+        - s3:ListBucket
+        - s3:PutObject
+      Resource: "arn:aws:s3:::training-certificates.neo4j.com/*"
+
+custom:
+  pythonRequirements:
+    zip: true
 
 plugins:
   - serverless-python-requirements
@@ -16,3 +26,7 @@ functions:
       handler: handler.generate_certificate
       events:
         - schedule: rate(1 hour)
+
+package:
+  exclude:
+    - a/**

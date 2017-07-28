@@ -1,3 +1,5 @@
+import unzip_requirements
+
 import boto
 import flask
 import base64
@@ -35,7 +37,7 @@ def generate_certificate(event, context):
         bucket_name = "training-certificates.neo4j.com"
 
         s3_connection = boto.connect_s3(calling_format=ProtocolIndependentOrdinaryCallingFormat())
-        bucket = s3_connection.get_bucket(bucket_name)
+        bucket = s3_connection.get_bucket(bucket_name, validate=False)
         key = boto.s3.key.Key(bucket, "{user_id}.pdf".format(user_id=event["user_id"]))
         key.set_contents_from_filename(local_pdf_file_name)
         print("https://s3.amazonaws.com/{bucket_name}/{user_id}.pdf".format(bucket_name = bucket_name, user_id = user_id))
