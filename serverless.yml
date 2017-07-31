@@ -8,7 +8,7 @@ provider:
   timeout: 180
   iamRoleStatements: # permissions for all of your functions can be set here
     - Effect: Allow
-      Action: 
+      Action:
         - s3:ListBucket
         - s3:PutObject
       Resource: "arn:aws:s3:::training-certificates.neo4j.com/*"
@@ -25,7 +25,7 @@ functions:
       name: GenerateCertificate
       handler: handler.generate_certificate
       events:
-        - schedule: rate(1 hour)
+        - http: POST generateCertificate
 
 package:
   exclude:

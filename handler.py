@@ -1,8 +1,9 @@
 import unzip_requirements
-
 import boto
 import flask
 import base64
+import json
+import datetime
 
 from flask import render_template, url_for
 from lib.wkhtmltopdf import wkhtmltopdf
@@ -10,8 +11,26 @@ from boto.s3.connection import ProtocolIndependentOrdinaryCallingFormat
 
 app = flask.Flask('my app')
 
-def generate_certificate(event, context):
-    print("Generating certificate for {event}".format(event = event))
+def suffix(d):
+    return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
+
+def generate_certificate(request, context):
+    print("Generating certificate for {request}".format(request = request))
+
+    json_payload = json.loads(request["body"])
+    result = json_payload["result"]
+    print("result", result)
+
+    event = {}
+    event["user_id"] = result["cm_user_id"]
+    event["name"] = "{first} {last}".format(first = result["first"], last = result["last"])
+    event["score_percentage"] = result["percentage"]
+    event["score_absolute"] = result["points_scored"]
+    event["score_maximum"] = result["points_available"]
+
+    t = datetime.datetime.fromtimestamp(int(result["time_finished"]))
+    event["date"] = t.strftime('%a {S} %b %Y').replace('{S}', str(t.day) + suffix(t.day))
+
     user_id = event["user_id"]
 
     with app.app_context():
@@ -40,4 +59,7 @@ def generate_certificate(event, context):
         bucket = s3_connection.get_bucket(bucket_name, validate=False)
         key = boto.s3.key.Key(bucket, "{user_id}.pdf".format(user_id=event["user_id"]))
         key.set_contents_from_filename(local_pdf_file_name)
-        print("https://s3.amazonaws.com/{bucket_name}/{user_id}.pdf".format(bucket_name = bucket_name, user_id = user_id))
+
+        certificate_path = "https://s3.amazonaws.com/{bucket_name}/{user_id}.pdf".format(bucket_name = bucket_name, user_id = user_id)
+        print("Certificate:", certificate_path)
+        return {"statusCode": 200, "body": certificate_path, "headers": {}}
