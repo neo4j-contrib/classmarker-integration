@@ -10,11 +10,10 @@ from lib.encryption import decrypt_value
 
 
 def generate_certificate(request, context):
-    print("Generating certificate for {request}".format(request=request))
+    print("generate_certificate request: {request}".format(request=request))
 
     json_payload = json.loads(request["body"])
     result = json_payload["result"]
-    print("Payload:", result)
 
     expected_hmac = request["headers"].get("X-Classmarker-Hmac-Sha256")
     if not expected_hmac:
@@ -27,7 +26,7 @@ def generate_certificate(request, context):
 
     if expected_hmac != generated_hmac:
         raise Exception("""\
-        Generated HMAC did not match the one provided by Classmarker so not generating certificate. 
+        Generated HMAC did not match the one provided by Classmarker so not generating certificate.
         Expected: {expected}, Actual: {generated}""".format(expected=expected_hmac, generated=generated_hmac))
 
     event = {
@@ -39,7 +38,12 @@ def generate_certificate(request, context):
         "date": int(result["time_finished"])
     }
 
-    certificate_path = certificate.generate(event)
-    print("Certificate:", certificate_path)
+    if not result["passed"]:
+        print("Not generating certificate for {event}".format(event = event))
+        certificate_path = None
+    else:
+        print("Generating certificate for {event}".format(event = event))
+        certificate_path = certificate.generate(event)
+        print("Certificate:", certificate_path)
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
