@@ -4,6 +4,9 @@ import flask
 import base64
 import json
 import datetime
+import hmac
+import hashlib
+import base64
 
 from flask import render_template, url_for
 from lib.wkhtmltopdf import wkhtmltopdf
@@ -19,7 +22,18 @@ def generate_certificate(request, context):
 
     json_payload = json.loads(request["body"])
     result = json_payload["result"]
-    print("result", result)
+    print("Payload:", result)
+
+    expected_hmac = request["headers"].get("X-Classmarker-Hmac-Sha256")
+    if not expected_hmac:
+        raise Exception("No HMAC provided. Request did not come from Classmarker so not generating certificate")
+
+    dig = hmac.new(b'cmKey', msg=request["body"].encode("utf-8"), digestmod=hashlib.sha256).digest()
+    generated_hmac = base64.b64encode(dig).decode()
+    print("expected HMAC:", expected_hmac, "generated HMAC:", generated_hmac)
+
+    if expected_hmac != generated_hmac:
+        raise Exception('Generated HMAC did not match the one provided by Classmarker so not generating certificate.')
 
     event = {}
     event["user_id"] = result["cm_user_id"]
