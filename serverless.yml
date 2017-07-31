@@ -2,20 +2,28 @@ service: certification
 
 frameworkVersion: ">=1.2.0 <2.0.0"
 
+custom:
+  stage: "${opt:stage, self:provider.stage}"
+  kmsKeyArn: ${file(env.yml):${self:custom.stage}.KEY_ARN}
+  pythonRequirements:
+    zip: true
+
 provider:
   name: aws
   runtime: python3.6
   timeout: 180
+  environment: ${file(env.yml):${self:custom.stage}}
   iamRoleStatements: # permissions for all of your functions can be set here
     - Effect: Allow
       Action:
         - s3:ListBucket
         - s3:PutObject
       Resource: "arn:aws:s3:::training-certificates.neo4j.com/*"
-
-custom:
-  pythonRequirements:
-    zip: true
+    - Effect: Allow
+      Action:
+        - KMS:Decrypt
+      Resource:
+        - ${self:custom.kmsKeyArn}
 
 plugins:
   - serverless-python-requirements
