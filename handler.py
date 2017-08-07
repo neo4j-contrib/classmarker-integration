@@ -1,4 +1,3 @@
-import unzip_requirements
 import json
 import hmac
 import hashlib
@@ -30,7 +29,7 @@ def generate_certificate(request, context):
         Expected: {expected}, Actual: {generated}""".format(expected=expected_hmac, generated=generated_hmac))
 
     event = {
-        "user_id": result["cm_user_id"],
+        "user_id": result["link_result_id"],
         "name": "{first} {last}".format(first=result["first"], last=result["last"]),
         "score_percentage": result["percentage"],
         "score_absolute": result["points_scored"],

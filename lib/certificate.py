@@ -45,6 +45,7 @@ def generate(event):
 
         s3_connection = boto.connect_s3(calling_format=ProtocolIndependentOrdinaryCallingFormat())
         bucket = s3_connection.get_bucket(bucket_name, validate=False)
+
         key = boto.s3.key.Key(bucket, "{user_id}.pdf".format(user_id=event["user_id"]))
         key.set_contents_from_filename(local_pdf_file_name)
 
