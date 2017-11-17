@@ -46,8 +46,7 @@ def generate_certificate(request, context):
         "score_percentage": result["percentage"],
         "score_absolute": result["points_scored"],
         "score_maximum": result["points_available"],
-        "date": int(result["time_finished"]),
-        "email": result["cm_user_id"]
+        "date": int(result["time_finished"])
     }
 
     if not result["passed"]:
