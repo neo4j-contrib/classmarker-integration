@@ -4,7 +4,16 @@ frameworkVersion: ">=1.2.0 <2.0.0"
 
 custom:
   stage: "${opt:stage, self:provider.stage}"
-  kmsKeyArn: ${file(env.yml):${self:custom.stage}.KEY_ARN}  
+  kmsKeyArn: ${file(env.yml):${self:custom.stage}.KEY_ARN}
+  CertificatesTopic:
+    Fn::Join:
+      - ":"
+      - - arn
+        - aws
+        - sns
+        - Ref: AWS::Region
+        - Ref: AWS::AccountId
+        - CertificatesToEmail
 
 provider:
   name: aws
@@ -22,6 +31,16 @@ provider:
         - KMS:Decrypt
       Resource:
         - ${self:custom.kmsKeyArn}
+    - Effect: 'Allow'
+      Action:
+        - "sns:Publish"
+      Resource:
+        - ${self:custom.CertificatesTopic}
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - ses:SendRawEmail
+      Resource: "arn:aws:ses:us-east-1:128916679330:identity/neo4j.com"
 
 plugins:
   - serverless-python-requirements
@@ -33,6 +52,14 @@ functions:
       role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
         - http: POST generateCertificate
+  send-email:
+      name: SendEmail
+      handler: handler.send_email
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+      events:
+        - sns:
+            topicName: CertificatesToEmail
+            displayName: Topic to email certificates
   get-email:
       name: Auth0GetEmailFromUid
       handler: handler.get_email_lambda
@@ -42,4 +69,5 @@ functions:
 
 package:
   exclude:
+    - node_modules/**
     - a/**

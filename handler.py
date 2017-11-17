@@ -3,12 +3,16 @@ import hmac
 import hashlib
 import base64
 import os
+import boto3
 
 import lib.certificate as certificate
 import lib.neo4j_accounts as accts 
 
 from lib.encryption import decrypt_value
 
+from string import Template
+
+EMAIL_TEMPLATES_BUCKET = "training-certificate-emails.neo4j.com"
 
 def get_email_lambda(request, context):
     json_payload = json.loads(request["body"])
@@ -42,7 +46,8 @@ def generate_certificate(request, context):
         "score_percentage": result["percentage"],
         "score_absolute": result["points_scored"],
         "score_maximum": result["points_available"],
-        "date": int(result["time_finished"])
+        "date": int(result["time_finished"]),
+        "email": result["cm_user_id"]
     }
 
     if not result["passed"]:
@@ -53,4 +58,58 @@ def generate_certificate(request, context):
         certificate_path = certificate.generate(event)
         print("Certificate:", certificate_path)
 
+        context_parts = context.invoked_function_arn.split(':')
+        topic_name = "CertificatesToEmail"
+        topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+
+        sns = boto3.client('sns')
+        event["certificate"] = certificate_path
+        sns.publish(TopicArn= topic_arn, Message= json.dumps(event))
+
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
+
+
+def send_email(event, context):
+    print(event)
+
+    s3 = boto3.client('s3')
+    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET,Key="%s.txt" % ('email'))
+    templatePlainText = response['Body'].read().decode("utf-8")
+
+    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET,Key="%s.html" % ('email'))
+    templateHtml = response['Body'].read().decode("utf-8")
+
+    templateObj = Template(templatePlainText)
+    templateHtmlObj = Template(templateHtml)
+
+    for record in event["Records"]:
+        message = json.loads(record["Sns"]["Message"])
+
+        name = message["name"]
+        # email = message["email"]
+        email = "m.h.needham@gmail.com"
+        certificate_path = message["certificate"]
+
+        email_client = boto3.client('ses')
+
+        bodyPlainText = templateObj.substitute(name=name, certificate=certificate_path)
+        bodyHtml = templateHtmlObj.substitute(name=name, certificate=certificate_path)
+
+
+        response = email_client.send_email(
+            Source = 'Neo4j DevRel <devrel+certification@neo4j.com>',
+            SourceArn = 'arn:aws:ses:us-east-1:128916679330:identity/neo4j.com',
+            Destination = {
+                'ToAddresses': [ email ]
+            },
+            Message = {
+                'Subject': { 'Data': '=?UTF-8?Q?=F0=9F=98=A2?= Your Neo4j Certification' },
+                'Body': {
+                    'Text':
+                        { 'Data': bodyPlainText },
+                    'Html':
+                        { 'Data': bodyHtml },
+                }
+            }
+        )
+        print(response)
