@@ -49,15 +49,23 @@ functions:
   generate-certificate:
       name: GenerateCertificate
       handler: handler.generate_certificate
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
         - http: POST generateCertificate
   send-email:
       name: SendEmail
       handler: handler.send_email
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
         - sns:
             topicName: CertificatesToEmail
             displayName: Topic to email certificates
+  get-email:
+      name: Auth0GetEmailFromUid
+      handler: handler.get_email_lambda
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+      events:
+        - http: POST Auth0GetEmailFromUid
 
 package:
   exclude:

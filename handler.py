@@ -6,11 +6,18 @@ import os
 import boto3
 
 import lib.certificate as certificate
+import lib.neo4j_accounts as accts 
+
 from lib.encryption import decrypt_value
 
 from string import Template
 
 EMAIL_TEMPLATES_BUCKET = "training-certificate-emails.neo4j.com"
+
+def get_email_lambda(request, context):
+    json_payload = json.loads(request["body"])
+    user_id = json_payload["user_id"]
+    return {"statusCode": 200, "body": accts.get_email_address(user_id), "headers": {}}
 
 def generate_certificate(request, context):
     print("generate_certificate request: {request}".format(request=request))
@@ -35,11 +42,11 @@ def generate_certificate(request, context):
     event = {
         "user_id": result["link_result_id"],
         "name": "{first} {last}".format(first=result["first"], last=result["last"]),
+        "email": accts.get_email_address(result["link_result_id"]),
         "score_percentage": result["percentage"],
         "score_absolute": result["points_scored"],
         "score_maximum": result["points_available"],
-        "date": int(result["time_finished"]),
-        "email": result["cm_user_id"]
+        "date": int(result["time_finished"])
     }
 
     if not result["passed"]:
