@@ -1,0 +1,11 @@
+Hi $name,
+
+Congratulations on passing the Neo4j certification exam! You are now a Neo4j Certified Professional.
+
+You can download your certificate at: $certificate
+
+Don't forget to add your certificate to your LinkedIn profile. You can do that by visiting https://www.linkedin.com/profile/add?startTask=Neo4j+Certified+Professional
+
+Cheers,
+Your Neo4j Developer Relations Team
+devrel@neo4j.com
