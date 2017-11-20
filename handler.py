@@ -6,7 +6,7 @@ import os
 import boto3
 
 import lib.certificate as certificate
-import lib.neo4j_accounts as accts 
+import lib.neo4j_accounts as accts
 
 from lib.encryption import decrypt_value
 
@@ -102,7 +102,7 @@ def send_email(event, context):
                 'ToAddresses': [ email ]
             },
             Message = {
-                'Subject': { 'Data': '=?UTF-8?Q?=F0=9F=98=A2?= Your Neo4j Certification' },
+                'Subject': { 'Data': 'Congratulations! You are now a Neo4j Certified Professional' },
                 'Body': {
                     'Text':
                         { 'Data': bodyPlainText },
