@@ -33,9 +33,7 @@ def get_auth0_management_token():
     }
     return return_obj
 
-def get_email_address(user):
-    global LOGGING_LEVEL
-
+def get_profile(user):
     apiInfo = get_auth0_management_token()
 
     try:
@@ -45,10 +43,14 @@ def get_email_address(user):
 
       jsonProfile = r.text
       profile = json.loads(jsonProfile)
-      if 'email' in profile:
-        return profile['email']
-      else:
-        return False
+      return profile
     except:
       return False
+
+def get_email_address(user):
+  profile = get_profile(user)
+  if 'email' in profile:
+    return profile['email']
+  else:
+    return False
 
