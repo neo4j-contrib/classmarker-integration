@@ -2,10 +2,12 @@ import os
 from subprocess import Popen
 from subprocess import PIPE
 
+
 class WKhtmlToPdf(object):
     """
     Convert an html page via its URL into a pdf.
     """
+
     def __init__(self, *args, **kwargs):
         self.url = None
         self.output_file = None
@@ -24,8 +26,6 @@ class WKhtmlToPdf(object):
         if not output_path:
             self.output_file = os.path.join('/tmp', self.output_file)
 
-
-
         self.params = []
         self.screen_resolution = [1024, 768]
         self.color_depth = 24
@@ -37,13 +37,13 @@ class WKhtmlToPdf(object):
 
         # execute the command
         command = './binary/wkhtmltopdf %s "%s" "%s" >> /tmp/wkhtp.log' % (
-                        " ".join([cmd for cmd in self.params]),
-                        self.url,
-                        self.output_file
-                  )
+            " ".join([cmd for cmd in self.params]),
+            self.url,
+            self.output_file
+        )
         try:
             p = Popen(command, shell=True,
-                        stdout=PIPE, stderr=PIPE, close_fds=True)
+                      stdout=PIPE, stderr=PIPE, close_fds=True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
 

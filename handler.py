@@ -15,13 +15,16 @@ from string import Template
 
 EMAIL_TEMPLATES_BUCKET = "training-certificate-emails.neo4j.com"
 
-db_driver = GraphDatabase.driver("bolt://%s" %  (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])), auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']), decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])))
+db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
+                                 auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
+                                                 decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])))
 
 
 def get_email_lambda(request, context):
     json_payload = json.loads(request["body"])
     user_id = json_payload["user_id"]
     return {"statusCode": 200, "body": accts.get_email_address(user_id), "headers": {}}
+
 
 def record_certification_attempt(event):
     test_data = event
@@ -54,6 +57,7 @@ def record_certification_attempt(event):
     results = session.run(cypher_insert, parameters=test_data)
     results.consume()
 
+
 def assign_swag_code(auth0_key):
     cypher_assign = """
       MATCH (u:User {auth0_key:{auth0_key}})
@@ -75,9 +79,10 @@ def assign_swag_code(auth0_key):
     session = db_driver.session()
     results = session.run(cypher_assign, parameters={"auth0_key": auth0_key})
     for record in results:
-      record = dict((el[0], el[1]) for el in record.items())
-      code = record['code']
+        record = dict((el[0], el[1]) for el in record.items())
+        code = record['code']
     return code
+
 
 def generate_certificate(request, context):
     print("recording certificate: {request}".format(request=request))
@@ -120,23 +125,24 @@ def generate_certificate(request, context):
     print("generate_certificate request: {request}".format(request=request))
 
     if not result["passed"]:
-        print("Not generating certificate for {event}".format(event = event))
+        print("Not generating certificate for {event}".format(event=event))
         certificate_path = None
     else:
         code = assign_swag_code(event.get('auth0_key'))
         event['swag_code'] = code
 
-        print("Generating certificate for {event}".format(event = event))
+        print("Generating certificate for {event}".format(event=event))
         certificate_path = certificate.generate(event)
         print("Certificate:", certificate_path)
 
         context_parts = context.invoked_function_arn.split(':')
         topic_name = "CertificatesToEmail"
-        topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+        topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(
+            region=context_parts[3], account_id=context_parts[4], topic=topic_name)
 
         sns = boto3.client('sns')
         event["certificate"] = certificate_path
-        sns.publish(TopicArn= topic_arn, Message= json.dumps(event))
+        sns.publish(TopicArn=topic_arn, Message=json.dumps(event))
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
 
@@ -145,14 +151,14 @@ def send_email(event, context):
     print(event)
 
     s3 = boto3.client('s3')
-    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET,Key="%s.txt" % ('email'))
-    templatePlainText = response['Body'].read().decode("utf-8")
+    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET, Key="%s.txt" % ('email'))
+    template_plain_text = response['Body'].read().decode("utf-8")
 
-    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET,Key="%s.html" % ('email'))
-    templateHtml = response['Body'].read().decode("utf-8")
+    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET, Key="%s.html" % ('email'))
+    template_html = response['Body'].read().decode("utf-8")
 
-    templateObj = Template(templatePlainText)
-    templateHtmlObj = Template(templateHtml)
+    template_obj = Template(template_plain_text)
+    template_html_obj = Template(template_html)
 
     for record in event["Records"]:
         message = json.loads(record["Sns"]["Message"])
@@ -164,23 +170,22 @@ def send_email(event, context):
 
         email_client = boto3.client('ses')
 
-        bodyPlainText = templateObj.substitute(name=name, certificate=certificate_path)
-        bodyHtml = templateHtmlObj.substitute(name=name, certificate=certificate_path)
-
+        body_plain_text = template_obj.substitute(name=name, certificate=certificate_path)
+        body_html = template_html_obj.substitute(name=name, certificate=certificate_path)
 
         response = email_client.send_email(
-            Source = 'Neo4j DevRel <devrel+certification@neo4j.com>',
-            SourceArn = 'arn:aws:ses:us-east-1:128916679330:identity/neo4j.com',
-            Destination = {
-                'ToAddresses': [ email ]
+            Source='Neo4j DevRel <devrel+certification@neo4j.com>',
+            SourceArn='arn:aws:ses:us-east-1:128916679330:identity/neo4j.com',
+            Destination={
+                'ToAddresses': [email]
             },
-            Message = {
-                'Subject': { 'Data': 'Congratulations! You are now a Neo4j Certified Professional' },
+            Message={
+                'Subject': {'Data': 'Congratulations! You are now a Neo4j Certified Professional'},
                 'Body': {
                     'Text':
-                        { 'Data': bodyPlainText },
+                        {'Data': body_plain_text},
                     'Html':
-                        { 'Data': bodyHtml },
+                        {'Data': body_html},
                 }
             }
         )
