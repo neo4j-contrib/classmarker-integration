@@ -6,6 +6,11 @@ You can download your certificate at: $certificate
 
 Don't forget to add your certificate to your LinkedIn profile. You can do that by visiting https://www.linkedin.com/profile/add?startTask=Neo4j+Certified+Professional
 
+You'll need to fill in the following details:
+Certification name: Neo4j Certified Professional
+Certification authority: Neo4j
+Certification URL: $certificate
+
 Cheers,
 Your Neo4j Developer Relations Team
 devrel@neo4j.com
