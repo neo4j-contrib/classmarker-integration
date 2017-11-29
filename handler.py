@@ -113,6 +113,13 @@ def send_email(event, context):
         print(response)
 
 
+def find_people_needing_swag(event, context):
+    print(event)
+
+    rows = certification.find_unsent_swag_emails(db_driver)
+    for row in rows:
+        print(row)
+
 def send_swag_email(event, context):
     print(event)
     s3 = boto3.client('s3')

@@ -62,19 +62,23 @@ def assign_swag_code(db_driver, auth0_key):
         code = record['code']
     return code
 
+
 unsent_swag_emails_query = """
 MATCH (u:User)<-[:ISSUED_TO]-(swag)
 where exists(u.auth0_key) 
 AND exists(u.firstName)
 AND exists(u.lastName)
 AND not exists(swag.email_sent)
-return u, swag
+return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode
 """
+
 
 def find_unsent_swag_emails(db_driver):
     with db_driver.session() as session:
         results = session.run(unsent_swag_emails_query)
-        for record in results:
-            record = dict((el[0], el[1]) for el in record.items())
-            code = record['code']
-        return code
+
+        return [{"first_name": record["firstName"],
+                 "last_name": record["lastName"],
+                 "swag_code": record["swagCode"]}
+                for record in results]
+

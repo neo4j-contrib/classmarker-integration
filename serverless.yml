@@ -82,6 +82,11 @@ functions:
       events:
         - http: POST Auth0GetEmailFromUid
 
+  find-people-needing-swag:
+      name: FindPeopleNeedingSwag
+      handler: handler.find_people_needing_swag
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+
   send-swag-email:
       name: SendSwagEmail
       handler: handler.send_swag_email
