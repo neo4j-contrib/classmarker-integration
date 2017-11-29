@@ -86,6 +86,8 @@ functions:
       name: FindPeopleNeedingSwag
       handler: handler.find_people_needing_swag
       role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+      events:
+        - schedule: rate(6 hour)
 
   send-swag-email:
       name: SendSwagEmail
