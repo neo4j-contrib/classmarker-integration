@@ -116,9 +116,17 @@ def send_email(event, context):
 def find_people_needing_swag(event, context):
     print(event)
 
+    context_parts = context.invoked_function_arn.split(':')
+    topic_name = "SwagToEmail"
+    topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(
+        region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+
+    sns = boto3.client('sns')
+
     rows = certification.find_unsent_swag_emails(db_driver)
     for row in rows:
         print(row)
+        sns.publish(TopicArn=topic_arn, Message=json.dumps(row))
 
 
 def send_swag_email(event, context):
