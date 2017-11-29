@@ -6,8 +6,9 @@ jobs:
       - image: circleci/python:3.6.1
     steps:
       - checkout
-      - run: curl -sL https://deb.nodesource.com/setup_6.x | bash -
-      - run: sudo apt-get update && sudo apt-get install -y awscli nodejs npm
+      - run: curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+      - run: chmod u+x nodesource_setup.sh && sudo ./nodesource_setup.sh
+      - run: sudo apt-get update && sudo apt-get install -y awscli build-essential nodejs npm
       - run: npm install serverless serverless-python-requirements
 #      - run: aws --region eu-west-1 s3 sync ~/circleci-gh-pages/email-templates/ s3://training-certificate-emails.neo4j.com --delete
       - run: echo $ENV_YAML | base64 --decode --ignore-garbage > ~/circleci-gh-pages/env.yml
