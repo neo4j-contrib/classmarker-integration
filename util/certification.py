@@ -69,6 +69,7 @@ where exists(u.auth0_key)
 AND exists(u.firstName)
 AND exists(u.lastName)
 AND not exists(swag.email_sent)
+// return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, u.email as email
 return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, "m.h.needham@gmail.com" as email
 """
 
