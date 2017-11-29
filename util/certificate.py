@@ -6,7 +6,7 @@ import flask
 from boto.s3.connection import ProtocolIndependentOrdinaryCallingFormat
 from flask import render_template
 
-from lib.wkhtmltopdf import wkhtmltopdf
+from util.wkhtmltopdf import wkhtmltopdf
 
 app = flask.Flask('my app')
 
@@ -49,4 +49,7 @@ def generate(event):
         key = boto.s3.key.Key(bucket, "{user_id}.pdf".format(user_id=event["user_id"]))
         key.set_contents_from_filename(local_pdf_file_name)
 
-        return "https://s3.amazonaws.com/{bucket_name}/{user_id}.pdf".format(bucket_name=bucket_name, user_id=user_id)
+        return "https://s3.amazonaws.com/{bucket_name}/{user_id}-{test_id}.pdf".format(
+            bucket_name=bucket_name,
+            user_id=user_id,
+            test_id=event["test_id"])
