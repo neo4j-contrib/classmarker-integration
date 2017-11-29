@@ -5,14 +5,14 @@ import base64
 import os
 import boto3
 
-import lib.certificate as certificate
-import lib.neo4j_accounts as accts
-import lib.certification as certification
+import util.certificate as certificate
+import util.neo4j_accounts as accts
+import util.certification as certification
 
-from lib.encryption import decrypt_value, decrypt_value_str
+from util.encryption import decrypt_value, decrypt_value_str
 from neo4j.v1 import GraphDatabase, basic_auth
 
-import lib.email as email
+import util.email as email
 
 db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
                                  auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
@@ -119,6 +119,7 @@ def find_people_needing_swag(event, context):
     rows = certification.find_unsent_swag_emails(db_driver)
     for row in rows:
         print(row)
+
 
 def send_swag_email(event, context):
     print(event)

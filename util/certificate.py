@@ -6,7 +6,7 @@ import flask
 from boto.s3.connection import ProtocolIndependentOrdinaryCallingFormat
 from flask import render_template
 
-from lib.wkhtmltopdf import wkhtmltopdf
+from util.wkhtmltopdf import wkhtmltopdf
 
 app = flask.Flask('my app')
 

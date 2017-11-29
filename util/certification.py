@@ -1,4 +1,4 @@
-import lib.neo4j_accounts as accts
+import util.neo4j_accounts as accts
 
 record_attempt_query = """
 MERGE (u:User {auth0_key:{auth0_key}})
