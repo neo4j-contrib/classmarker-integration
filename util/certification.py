@@ -69,7 +69,7 @@ where exists(u.auth0_key)
 AND exists(u.firstName)
 AND exists(u.lastName)
 AND not exists(swag.email_sent)
-return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode
+return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, "m.h.needham@gmail.com" as email
 """
 
 
@@ -79,6 +79,18 @@ def find_unsent_swag_emails(db_driver):
 
         return [{"first_name": record["firstName"],
                  "last_name": record["lastName"],
-                 "swag_code": record["swagCode"]}
+                 "swag_code": record["swagCode"],
+                 "email": record["email"]}
                 for record in results]
 
+mark_swag_email_sent_query = """
+MATCH (s:SwagRedemptionCode { code: {swag_code} })
+SET s.email_sent = true
+"""
+
+
+def swag_email_sent(db_driver, swag_code):
+    print("Marking swag email sent " + swag_code)
+    with db_driver.session() as session:
+        results = session.run(mark_swag_email_sent_query, parameters={"swag_code": swag_code})
+        results.consume()
