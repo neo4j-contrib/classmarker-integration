@@ -1,0 +1,12 @@
+Hi $name,
+
+Congratulations again on passing the Neo4j certification exam! You are now part of a select group of Neo4j experts.
+
+You can order your t-shirt and swag free of charge by visiting https://stores.kotisdesign.com/neocertified/$swag_code
+
+The t-shirt, laptop sticker, and shipping are free.  For international shipments, it is considered a gift.
+There is, however, still a chance that your customs service will ask you to pay duty on it as we send it from a commercial address.  You'll get a shipment notification when it goes out - it will usually include a tracking number.
+
+Cheers,
+Your Neo4j Developer Relations Team
+devrel@neo4j.com

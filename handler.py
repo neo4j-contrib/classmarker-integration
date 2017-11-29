@@ -7,13 +7,12 @@ import boto3
 
 import lib.certificate as certificate
 import lib.neo4j_accounts as accts
+import lib.certification as certification
 
 from lib.encryption import decrypt_value, decrypt_value_str
 from neo4j.v1 import GraphDatabase, basic_auth
 
-from string import Template
-
-EMAIL_TEMPLATES_BUCKET = "training-certificate-emails.neo4j.com"
+import lib.email as email
 
 db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
                                  auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
@@ -24,64 +23,6 @@ def get_email_lambda(request, context):
     json_payload = json.loads(request["body"])
     user_id = json_payload["user_id"]
     return {"statusCode": 200, "body": accts.get_email_address(user_id), "headers": {}}
-
-
-def record_certification_attempt(event):
-    test_data = event
-
-    profile = accts.get_profile(event['auth0_key'])
-    print(profile)
-
-    test_data["given_name"] = profile.get("given_name")
-    test_data["family_name"] = profile.get("family_name")
-
-    cypher_insert = """
-      MERGE (u:User {auth0_key:{auth0_key}})
-      ON CREATE
-        SET u.email={email},
-            u.firstName={given_name},
-            u.lastName={family_name}
-      CREATE (e:Exam:Certification)
-        SET e.finished={date},
-            e.percent={score_percentage},
-            e.points={score_absolute},
-            e.maxPoints={score_maximum},
-            e.testTakerName={name},
-            e.passed={passed},
-            e.name={test_name_short},
-            e.testId={test_id}
-      MERGE (u)-[:TOOK]->(e)
-    """
-    print(cypher_insert)
-    session = db_driver.session()
-    results = session.run(cypher_insert, parameters=test_data)
-    results.consume()
-
-
-def assign_swag_code(auth0_key):
-    cypher_assign = """
-      MATCH (u:User {auth0_key:{auth0_key}})
-      WITH u
-      MATCH (src:SwagRedemptionCode)
-        WHERE
-          src.redeemed=false
-          AND
-          src.type='certified'
-          AND
-          size( (src)-[:ISSUED_TO]->(:User) ) = 0
-      WITH u, src
-      LIMIT 1
-      MERGE (src)-[:ISSUED_TO]->(u)
-      RETURN src.code AS code
-    """
-    print(cypher_assign)
-    code = ''
-    session = db_driver.session()
-    results = session.run(cypher_assign, parameters={"auth0_key": auth0_key})
-    for record in results:
-        record = dict((el[0], el[1]) for el in record.items())
-        code = record['code']
-    return code
 
 
 def generate_certificate(request, context):
@@ -120,7 +61,7 @@ def generate_certificate(request, context):
         "ip": result["ip_address"]
     }
 
-    record_certification_attempt(event)
+    certification.record_attempt(db_driver, event)
 
     print("generate_certificate request: {request}".format(request=request))
 
@@ -128,7 +69,7 @@ def generate_certificate(request, context):
         print("Not generating certificate for {event}".format(event=event))
         certificate_path = None
     else:
-        code = assign_swag_code(event.get('auth0_key'))
+        code = certification.assign_swag_code(db_driver, event.get('auth0_key'))
         event['swag_code'] = code
 
         print("Generating certificate for {event}".format(event=event))
@@ -149,44 +90,51 @@ def generate_certificate(request, context):
 
 def send_email(event, context):
     print(event)
-
     s3 = boto3.client('s3')
-    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET, Key="%s.txt" % ('email'))
-    template_plain_text = response['Body'].read().decode("utf-8")
+    email_client = boto3.client('ses')
 
-    response = s3.get_object(Bucket=EMAIL_TEMPLATES_BUCKET, Key="%s.html" % ('email'))
-    template_html = response['Body'].read().decode("utf-8")
+    email_title = 'Congratulations! You are now a Neo4j Certified Professional'
+    template_name = 'email'
 
-    template_obj = Template(template_plain_text)
-    template_html_obj = Template(template_html)
+    template_obj = email.plain_text_template(s3, template_name)
+    template_html_obj = email.html_template(s3, template_name)
 
     for record in event["Records"]:
         message = json.loads(record["Sns"]["Message"])
 
         name = message["name"]
-        # email = message["email"]
-        email = "m.h.needham@gmail.com"
+        # email_address = message["email"]
+        email_address = "m.h.needham@gmail.com"
         certificate_path = message["certificate"]
 
-        email_client = boto3.client('ses')
+        template_args = {"name": name, "certificate": certificate_path}
 
-        body_plain_text = template_obj.substitute(name=name, certificate=certificate_path)
-        body_html = template_html_obj.substitute(name=name, certificate=certificate_path)
+        response = email.send(email_address, email_client, email_title, template_args, template_html_obj, template_obj)
+        print(response)
 
-        response = email_client.send_email(
-            Source='Neo4j DevRel <devrel+certification@neo4j.com>',
-            SourceArn='arn:aws:ses:us-east-1:128916679330:identity/neo4j.com',
-            Destination={
-                'ToAddresses': [email]
-            },
-            Message={
-                'Subject': {'Data': 'Congratulations! You are now a Neo4j Certified Professional'},
-                'Body': {
-                    'Text':
-                        {'Data': body_plain_text},
-                    'Html':
-                        {'Data': body_html},
-                }
-            }
-        )
+
+def send_swag_email(event, context):
+    print(event)
+    s3 = boto3.client('s3')
+    email_client = boto3.client('ses')
+
+    template_name = 'swag'
+
+    template_obj = email.plain_text_template(s3, template_name)
+    template_html_obj = email.html_template(s3, template_name)
+
+    for record in event["Records"]:
+        message = json.loads(record["Sns"]["Message"])
+
+        first_name = message["first_name"]
+        last_name = message["last_name"]
+        # email_address = message["email"]
+        email_address = "m.h.needham@gmail.com"
+        swag_code = message["swag_code"]
+
+        email_title = "{0}, now you're a Neo4j Certified Professional - Get your t-shirt!".format(first_name)
+
+        template_args = {"name": "{0} {1}".format(first_name, last_name), "swag_code": swag_code}
+
+        response = email.send(email_address, email_client, email_title, template_args, template_html_obj, template_obj)
         print(response)

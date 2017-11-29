@@ -5,13 +5,13 @@ import boto3
 
 
 def decrypt_value(encrypted):
-    decryptedResponse = boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
-    return decryptedResponse['Plaintext']
+    decrypted_response = boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
+    return decrypted_response['Plaintext']
 
 
 def decrypt_value_str(encrypted):
-    decryptedResponse = boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
-    return decryptedResponse['Plaintext'].decode("utf-8")
+    decrypted_response = boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
+    return decrypted_response['Plaintext'].decode("utf-8")
 
 
 def encrypt_value(value, kms_key):

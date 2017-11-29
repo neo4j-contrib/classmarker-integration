@@ -14,6 +14,16 @@ custom:
         - Ref: AWS::Region
         - Ref: AWS::AccountId
         - CertificatesToEmail
+  SwagTopic:
+    Fn::Join:
+      - ":"
+      - - arn
+        - aws
+        - sns
+        - Ref: AWS::Region
+        - Ref: AWS::AccountId
+        - SwagToEmail
+
 
 provider:
   name: aws
@@ -36,6 +46,11 @@ provider:
         - "sns:Publish"
       Resource:
         - ${self:custom.CertificatesTopic}
+    - Effect: 'Allow'
+      Action:
+        - "sns:Publish"
+      Resource:
+        - ${self:custom.SwagTopic}
     - Effect: Allow
       Action:
         - ses:SendEmail
@@ -66,6 +81,15 @@ functions:
       role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
         - http: POST Auth0GetEmailFromUid
+
+  send-swag-email:
+      name: SendSwagEmail
+      handler: handler.send_swag_email
+      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+      events:
+        - sns:
+            topicName: SwagToEmail
+            displayName: Topic to email swag
 
 package:
   exclude:
