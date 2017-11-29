@@ -6,7 +6,8 @@ jobs:
       - image: circleci/node:6.12.0
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt-get install -y awscli python3
+      - run: sudo add-apt-repository ppa:jonathonf/python-3.6
+      - run: sudo apt-get update && sudo apt-get install -y awscli python3.6
       - run: npm install serverless serverless-python-requirements
 #      - run: aws --region eu-west-1 s3 sync ~/circleci-gh-pages/email-templates/ s3://training-certificate-emails.neo4j.com --delete
       - run: echo $ENV_YAML | base64 --decode --ignore-garbage > ~/circleci-gh-pages/env.yml
