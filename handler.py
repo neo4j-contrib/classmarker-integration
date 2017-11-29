@@ -49,7 +49,6 @@ def record_certification_attempt(event):
             e.testId={test_id}
       MERGE (u)-[:TOOK]->(e)
     """
-    print(cypher_insert)
     session = db_driver.session()
     results = session.run(cypher_insert, parameters=test_data)
     results.consume()
@@ -70,7 +69,6 @@ def assign_swag_code(auth0_key):
       MERGE (src)-[:ISSUED_TO]->(u)
       RETURN src.code AS code
     """
-    print(cypher_assign)
     code = ''
     session = db_driver.session()
     results = session.run(cypher_assign, parameters={"auth0_key": auth0_key})
@@ -123,8 +121,10 @@ def generate_certificate(request, context):
         print("Not generating certificate for {event}".format(event = event))
         certificate_path = None
     else:
+        print("User passed, getting swag code")
         code = assign_swag_code(event.get('auth0_key'))
         event['swag_code'] = code
+        print("Swag code received {swag_code}".format(swag_code = code))
 
         print("Generating certificate for {event}".format(event = event))
         certificate_path = certificate.generate(event)
