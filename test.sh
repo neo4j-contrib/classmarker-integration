@@ -44,3 +44,6 @@ open certificate.pdf
 
 
 --data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"swag_code\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'
+
+
+--data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"certificate\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'

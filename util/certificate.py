@@ -1,14 +1,16 @@
 import base64
 import datetime
+import hashlib
 
-import boto
+import boto3
 import flask
-from boto.s3.connection import ProtocolIndependentOrdinaryCallingFormat
 from flask import render_template
 
 from util.wkhtmltopdf import wkhtmltopdf
 
 app = flask.Flask('my app')
+
+BUCKET_NAME = "graphacademy.neo4j.com"
 
 
 def suffix(d):
@@ -17,7 +19,7 @@ def suffix(d):
 
 def generate(event):
     t = datetime.datetime.fromtimestamp(event["date"])
-    event["date"] = t.strftime('%a {S} %b %Y').replace('{S}', str(t.day) + suffix(t.day))
+    event["date_formatted"] = t.strftime('%a {S} %b %Y').replace('{S}', str(t.day) + suffix(t.day))
 
     user_id = event["user_id"]
 
@@ -32,7 +34,7 @@ def generate(event):
                                    score_percentage=event["score_percentage"],
                                    score_absolute=event["score_absolute"],
                                    score_maximum=event["score_maximum"],
-                                   date=event["date"])
+                                   date=event["date_formatted"])
 
         local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
         with open(local_html_file_name, "wb") as file:
@@ -41,15 +43,20 @@ def generate(event):
         local_pdf_file_name = "/tmp/{file_name}.pdf".format(file_name=user_id)
         wkhtmltopdf(local_html_file_name, local_pdf_file_name)
 
-        bucket_name = "training-certificates.neo4j.com"
+        pdf_location = generate_pdf_location(event)
 
-        s3_connection = boto.connect_s3(calling_format=ProtocolIndependentOrdinaryCallingFormat())
-        bucket = s3_connection.get_bucket(bucket_name, validate=False)
+        s3 = boto3.client('s3')
+        with open(local_pdf_file_name, 'rb') as data:
+            s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=pdf_location)
 
-        key = boto.s3.key.Key(bucket, "{user_id}.pdf".format(user_id=event["user_id"]))
-        key.set_contents_from_filename(local_pdf_file_name)
+        return "https://{bucket_name}/{pdf_location}".format(bucket_name=BUCKET_NAME,
+                                                             pdf_location=pdf_location)
 
-        return "https://s3.amazonaws.com/{bucket_name}/{user_id}-{test_id}.pdf".format(
-            bucket_name=bucket_name,
-            user_id=user_id,
-            test_id=event["test_id"])
+
+def generate_pdf_location(event):
+    return "certificates/{certificate_hash}.pdf".format(certificate_hash=generate_certificate_hash(event))
+
+
+def generate_certificate_hash(event):
+    unhashed_key = "{0}-{1}-{2}".format(event["user_id"], event["test_id"], event["auth0_key"])
+    return hashlib.sha256(unhashed_key.encode("utf-8")).hexdigest()

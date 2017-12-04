@@ -69,23 +69,31 @@ def generate_certificate(request, context):
         print("Not generating certificate for {event}".format(event=event))
         certificate_path = None
     else:
-        code = certification.assign_swag_code(db_driver, event.get('auth0_key'))
-        event['swag_code'] = code
+        certification.assign_swag_code(db_driver, event.get('auth0_key'))
+
+        certificate_path = certificate.generate(event)
+        event["certificate"] = certificate_path
+
+        certificate_number = certification.record_success(db_driver, event)[0]["certificate_number"]
+        event["certificate_number"] = int(certificate_number)
 
         print("Generating certificate for {event}".format(event=event))
-        certificate_path = certificate.generate(event)
-        print("Certificate:", certificate_path)
-
-        context_parts = context.invoked_function_arn.split(':')
-        topic_name = "CertificatesToEmail"
-        topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(
-            region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+        print("Certificate:", certificate_path, "Certificate Number: ", certificate_number)
 
         sns = boto3.client('sns')
-        event["certificate"] = certificate_path
-        sns.publish(TopicArn=topic_arn, Message=json.dumps(event))
+
+        topic_arn = create_topic_arn(context, "CertificatesToEmail")
+        sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
+
+
+def create_topic_arn(context, topic_name):
+    context_parts = context.invoked_function_arn.split(':')
+    topic_name = topic_name
+    topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(
+        region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+    return topic_arn
 
 
 def send_email(event, context):
@@ -104,10 +112,11 @@ def send_email(event, context):
 
         name = message["name"]
         # email_address = message["email"]
-        email_address = "m.h.needham@gmail.com"
+        email_address = "mark.needham@neo4j.com"
         certificate_path = message["certificate"]
+        certificate_number = message["certificate_number"]
 
-        template_args = {"name": name, "certificate": certificate_path}
+        template_args = {"name": name, "certificate": certificate_path, "certificate_number": certificate_number}
 
         response = email.send(email_address, email_client, email_title, template_args, template_html_obj, template_obj)
         print(response)
@@ -116,10 +125,7 @@ def send_email(event, context):
 def find_people_needing_swag(event, context):
     print(event)
 
-    context_parts = context.invoked_function_arn.split(':')
-    topic_name = "SwagToEmail"
-    topic_arn = "arn:aws:sns:{region}:{account_id}:{topic}".format(
-        region=context_parts[3], account_id=context_parts[4], topic=topic_name)
+    topic_arn = create_topic_arn(context, "SwagToEmail")
 
     sns = boto3.client('sns')
 

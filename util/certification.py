@@ -7,7 +7,8 @@ SET u.email={email},
     u.firstName={given_name},
     u.lastName={family_name}
 MERGE (e:Exam {id: [{auth0_key}, toString({test_id}), toString({date})] })
-SET e:Certification,
+ON CREATE SET 
+    e:Certification,
     e.finished={date},
     e.percent={score_percentage},
     e.points={score_absolute},
@@ -17,6 +18,7 @@ SET e:Certification,
     e.name={test_name_short},
     e.testId={test_id}
 MERGE (u)-[:TOOK]->(e)
+RETURN e
 """
 
 
@@ -30,14 +32,43 @@ def record_attempt(db_driver, event):
     test_data["family_name"] = profile.get("family_name")
 
     print(record_attempt_query)
-    session = db_driver.session()
-    results = session.run(record_attempt_query, parameters=test_data)
-    results.consume()
+    with db_driver.session() as session:
+        results = session.write_transaction(lambda tx: tx.run(record_attempt_query, parameters=test_data))
+        results.consume()
+
+
+record_success_query = """\
+MATCH (c:Certification) 
+WITH max(c.certificateNumber) AS maxCertificateNumber
+WITH maxCertificateNumber + round(rand() * 150) AS certificateNumber
+MATCH (e:Exam {id: [{auth0_key}, {test_id}, {date}] })
+SET e.certificateNumber = coalesce(e.certificateNumber, certificateNumber),
+    e.certificatePath = {certificate}
+RETURN e.certificateNumber AS certificateNumber  
+"""
+
+
+def record_success(db_driver, event):
+    params = {
+        "certificate": event["certificate"],
+        "auth0_key": event["auth0_key"],
+        "test_id": str(event["test_id"]),
+        "date": str(event["date"])
+    }
+
+    print(record_success_query)
+    print(event)
+    print(params)
+
+    with db_driver.session() as session:
+        results = session.write_transaction(lambda tx: tx.run(record_success_query, parameters=params))
+        return [{"certificate_number": record["certificateNumber"]} for record in results]
 
 
 assign_swag_query = """
 MATCH (u:User {auth0_key:{auth0_key}})
-WITH u
+WHERE SIZE( (u)<-[:ISSUED_TO]-() ) = 0
+WITH u LIMIT 1
 MATCH (src:SwagRedemptionCode)
 WHERE
   src.redeemed=false
@@ -48,19 +79,14 @@ WHERE
 WITH u, src
 LIMIT 1
 MERGE (src)-[:ISSUED_TO]->(u)
-RETURN src.code AS code
 """
 
 
 def assign_swag_code(db_driver, auth0_key):
     print(assign_swag_query)
-    code = ''
-    session = db_driver.session()
-    results = session.run(assign_swag_query, parameters={"auth0_key": auth0_key})
-    for record in results:
-        record = dict((el[0], el[1]) for el in record.items())
-        code = record['code']
-    return code
+    with db_driver.session() as session:
+        results = session.run(assign_swag_query, parameters={"auth0_key": auth0_key})
+        results.consume()
 
 
 unsent_swag_emails_query = """
@@ -83,6 +109,7 @@ def find_unsent_swag_emails(db_driver):
                  "swag_code": record["swagCode"],
                  "email": record["email"]}
                 for record in results]
+
 
 mark_swag_email_sent_query = """
 MATCH (s:SwagRedemptionCode { code: {swag_code} })

@@ -102,3 +102,4 @@ package:
   exclude:
     - node_modules/**
     - a/**
+    - .git/**
