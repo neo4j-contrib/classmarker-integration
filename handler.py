@@ -71,11 +71,12 @@ def generate_certificate(request, context):
     else:
         certification.assign_swag_code(db_driver, event.get('auth0_key'))
 
+        certificate_number = certification.generate_certificate_number(db_driver, event)[0]["certificate_number"]
+        event["certificate_number"] = int(certificate_number)
+
         certificate_path = certificate.generate(event)
         event["certificate"] = certificate_path
-
-        certificate_number = certification.record_success(db_driver, event)[0]["certificate_number"]
-        event["certificate_number"] = int(certificate_number)
+        certification.save_certificate_path(db_driver, event)
 
         print("Generating certificate for {event}".format(event=event))
         print("Certificate:", certificate_path, "Certificate Number: ", certificate_number)
@@ -111,8 +112,7 @@ def send_email(event, context):
         message = json.loads(record["Sns"]["Message"])
 
         name = message["name"]
-        # email_address = message["email"]
-        email_address = "mark.needham@neo4j.com"
+        email_address = message["email"]
         certificate_path = message["certificate"]
         certificate_number = message["certificate_number"]
 

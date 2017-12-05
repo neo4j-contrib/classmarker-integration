@@ -37,18 +37,34 @@ def record_attempt(db_driver, event):
         results.consume()
 
 
-record_success_query = """\
+certificate_number_query = """\
 MATCH (c:Certification) 
 WITH max(c.certificateNumber) AS maxCertificateNumber
 WITH maxCertificateNumber + round(rand() * 150) AS certificateNumber
 MATCH (e:Exam {id: [{auth0_key}, {test_id}, {date}] })
-SET e.certificateNumber = coalesce(e.certificateNumber, certificateNumber),
-    e.certificatePath = {certificate}
+SET e.certificateNumber = coalesce(e.certificateNumber, certificateNumber)
 RETURN e.certificateNumber AS certificateNumber  
 """
 
 
-def record_success(db_driver, event):
+def generate_certificate_number(db_driver, event):
+    params = {
+        "auth0_key": event["auth0_key"],
+        "test_id": str(event["test_id"]),
+        "date": str(event["date"])
+    }
+
+    with db_driver.session() as session:
+        results = session.write_transaction(lambda tx: tx.run(certificate_number_query, parameters=params))
+        return [{"certificate_number": record["certificateNumber"]} for record in results]
+
+record_certificate_query = """\
+MATCH (e:Exam {id: [{auth0_key}, {test_id}, {date}] })
+SET e.certificatePath = {certificate}  
+"""
+
+
+def save_certificate_path(db_driver, event):
     params = {
         "certificate": event["certificate"],
         "auth0_key": event["auth0_key"],
@@ -56,13 +72,9 @@ def record_success(db_driver, event):
         "date": str(event["date"])
     }
 
-    print(record_success_query)
-    print(event)
-    print(params)
-
     with db_driver.session() as session:
-        results = session.write_transaction(lambda tx: tx.run(record_success_query, parameters=params))
-        return [{"certificate_number": record["certificateNumber"]} for record in results]
+        results = session.write_transaction(lambda tx: tx.run(record_certificate_query, parameters=params))
+        results.consume()
 
 
 assign_swag_query = """
@@ -95,8 +107,8 @@ where exists(u.auth0_key)
 AND exists(u.firstName)
 AND exists(u.lastName)
 AND not exists(swag.email_sent)
-// return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, u.email as email
-return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, "m.h.needham@gmail.com" as email
+return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, u.email as email
+//return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, "m.h.needham@gmail.com" as email
 """
 
 

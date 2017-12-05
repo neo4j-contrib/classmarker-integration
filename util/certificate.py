@@ -34,7 +34,9 @@ def generate(event):
                                    score_percentage=event["score_percentage"],
                                    score_absolute=event["score_absolute"],
                                    score_maximum=event["score_maximum"],
-                                   date=event["date_formatted"])
+                                   certificate_number=event["certificate_number"],
+                                   date=event["date_formatted"]
+                                   )
 
         local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
         with open(local_html_file_name, "wb") as file:
