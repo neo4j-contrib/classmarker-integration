@@ -22,7 +22,12 @@ db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GR
 def get_email_lambda(request, context):
     json_payload = json.loads(request["body"])
     user_id = json_payload["user_id"]
-    return {"statusCode": 200, "body": accts.get_email_address(user_id), "headers": {}}
+ 
+    if ('Accept' in request['headers'] and request['headers']['Accept'].find('application/json') >= 0):
+      return {"statusCode": 200, "body": json.dumps({"email": accts.get_email_address(user_id), "auth0": user_id}), "headers": {"Content-Type": "application/json"}}
+    else:
+      # plain text
+      return {"statusCode": 200, "body": accts.get_email_address(user_id), "headers": {}}
 
 
 def generate_certificate(request, context):

@@ -1,0 +1,851 @@
+{
+  "service": {
+    "service": "certification",
+    "serviceObject": {
+      "name": "certification"
+    },
+    "provider": {
+      "stage": "dev",
+      "region": "us-east-1",
+      "variableSyntax": "\\${([ ~:a-zA-Z0-9._'\",\\-\\/\\(\\)]+?)}",
+      "name": "aws",
+      "runtime": "python3.6",
+      "timeout": 180,
+      "environment": {
+        "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+        "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+        "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+        "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+        "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+        "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+      },
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:PutObject"
+          ],
+          "Resource": "arn:aws:s3:::training-certificates.neo4j.com/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "KMS:Decrypt"
+          ],
+          "Resource": [
+            "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sns:Publish"
+          ],
+          "Resource": [
+            {
+              "Fn::Join": [
+                ":",
+                [
+                  "arn",
+                  "aws",
+                  "sns",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "CertificatesToEmail"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sns:Publish"
+          ],
+          "Resource": [
+            {
+              "Fn::Join": [
+                ":",
+                [
+                  "arn",
+                  "aws",
+                  "sns",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  "SwagToEmail"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ses:SendEmail",
+            "ses:SendRawEmail"
+          ],
+          "Resource": "arn:aws:ses:us-east-1:128916679330:identity/neo4j.com"
+        }
+      ],
+      "versionFunctions": true,
+      "remoteFunctionData": null,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket"
+          },
+          "GenerateDashcertificateLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/GenerateCertificate"
+            }
+          },
+          "SendDashemailLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/SendEmail"
+            }
+          },
+          "GetDashemailLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/Auth0GetEmailFromUid"
+            }
+          },
+          "FindDashpeopleDashneedingDashswagLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/FindPeopleNeedingSwag"
+            }
+          },
+          "SendDashswagDashemailLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/SendSwagEmail"
+            }
+          },
+          "GenerateDashcertificateLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z/certification.zip"
+              },
+              "FunctionName": "GenerateCertificate",
+              "Handler": "handler.generate_certificate",
+              "MemorySize": 1024,
+              "Role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+              "Runtime": "python3.6",
+              "Timeout": 180,
+              "Environment": {
+                "Variables": {
+                  "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+                  "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+                  "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+                  "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+                  "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+                  "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+                }
+              }
+            },
+            "DependsOn": [
+              "GenerateDashcertificateLogGroup"
+            ]
+          },
+          "GenerateDashcertificateLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GenerateDashcertificateLambdaFunction"
+              },
+              "CodeSha256": "4U3JrObU8gfNh1MSgx/By7VZuay/jyJ6DjQJ/t/jVLA="
+            }
+          },
+          "SendDashemailLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z/certification.zip"
+              },
+              "FunctionName": "SendEmail",
+              "Handler": "handler.send_email",
+              "MemorySize": 1024,
+              "Role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+              "Runtime": "python3.6",
+              "Timeout": 180,
+              "Environment": {
+                "Variables": {
+                  "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+                  "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+                  "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+                  "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+                  "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+                  "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+                }
+              }
+            },
+            "DependsOn": [
+              "SendDashemailLogGroup"
+            ]
+          },
+          "SendDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SendDashemailLambdaFunction"
+              },
+              "CodeSha256": "4U3JrObU8gfNh1MSgx/By7VZuay/jyJ6DjQJ/t/jVLA="
+            }
+          },
+          "GetDashemailLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z/certification.zip"
+              },
+              "FunctionName": "Auth0GetEmailFromUid",
+              "Handler": "handler.get_email_lambda",
+              "MemorySize": 1024,
+              "Role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+              "Runtime": "python3.6",
+              "Timeout": 180,
+              "Environment": {
+                "Variables": {
+                  "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+                  "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+                  "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+                  "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+                  "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+                  "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+                }
+              }
+            },
+            "DependsOn": [
+              "GetDashemailLogGroup"
+            ]
+          },
+          "GetDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetDashemailLambdaFunction"
+              },
+              "CodeSha256": "4U3JrObU8gfNh1MSgx/By7VZuay/jyJ6DjQJ/t/jVLA="
+            }
+          },
+          "FindDashpeopleDashneedingDashswagLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z/certification.zip"
+              },
+              "FunctionName": "FindPeopleNeedingSwag",
+              "Handler": "handler.find_people_needing_swag",
+              "MemorySize": 1024,
+              "Role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+              "Runtime": "python3.6",
+              "Timeout": 180,
+              "Environment": {
+                "Variables": {
+                  "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+                  "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+                  "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+                  "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+                  "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+                  "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+                }
+              }
+            },
+            "DependsOn": [
+              "FindDashpeopleDashneedingDashswagLogGroup"
+            ]
+          },
+          "FindDashpeopleDashneedingDashswagLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "FindDashpeopleDashneedingDashswagLambdaFunction"
+              },
+              "CodeSha256": "4U3JrObU8gfNh1MSgx/By7VZuay/jyJ6DjQJ/t/jVLA="
+            }
+          },
+          "SendDashswagDashemailLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z/certification.zip"
+              },
+              "FunctionName": "SendSwagEmail",
+              "Handler": "handler.send_swag_email",
+              "MemorySize": 1024,
+              "Role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+              "Runtime": "python3.6",
+              "Timeout": 180,
+              "Environment": {
+                "Variables": {
+                  "AUTH0_CREDS": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAY8wggGLBgkqhkiG9w0BBwagggF8MIIBeAIBADCCAXEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM6c83rCCYjUTY2s6+AgEQgIIBQsbZdpg0+QfTS9QB6AKEU9XvDuvRXKWpEef+Dujy9R44A5o+XiX9ozmoECeRB2rkqHjevzbiBUqiTWJ4NGDiQykCMJFc4xoUblEGmMZCdaHeuahEwQtwej/OEN5rW7AD/3glZSyb81U4OgshieyU+YwJwGh2akfZjpE9h+IYcA5EcTa8mavbR3NgPJoSkNFVrY6V+w+BkIyiy1pCfQPGs40iqJobh0Hrzimbj/3jJ4Ky9sHyCphWa1tUdaS5BT2aoxaJYz4AHLExd77Jz5TVZFW9cxFYlsxiFQ0P+4JMG2VvCTUejks9gULgpM8la+Or1GKC66zalxeduLbp7ysC8o3VxGkhKcAIYPDieIMRkcytf7tjkNH6ovn2wjhUblBFlQhPrdgg+p76HWA1qyhvvJ03dhDwwkjXdkVb5df/N65mbGc=",
+                  "KEY_ARN": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+                  "CM_SECRET_PHRASE": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAG0wawYJKoZIhvcNAQcGoF4wXAIBADBXBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDE13IQ3iImHrkolPVwIBEIAqLpOgE/ehDFzPQfuO+pODlin9dXHhD8EJ3oEFLwKER8dhMONM17NrO/fl",
+                  "GRAPHACADEMY_DB_PW": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAHIwcAYJKoZIhvcNAQcGoGMwYQIBADBcBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEZ77UjTSvYz8XNrsAIBEIAvZINTGLij1qXGJoiU84jj94e9mac9p6WyJv+G8bAw/+xMeFftDtO6mtccbcFYvaU=",
+                  "GRAPHACADEMY_DB_USER": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLWS4iDxuST+ZwReCwIBEIAnF8aSzyNu8nRjNmsRtJ0toCPgQebh4cqakyROsbgUR0dut5OTas0L",
+                  "GRAPHACADEMY_DB_HOST_PORT": "AQECAHiKkZk3iOHTLUzTG5MCv+NbkbwNJelCfETVV6O/9dEUhQAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDMmdfvtR0U57CMBK5AIBEIA7x0/isA96d0QRLwa8E9j2U+VwfHRogHJcFWOO4904vbdRUJgQQZcNyrBW2HqV4x/9oElqfadEcrDdsNg="
+                }
+              }
+            },
+            "DependsOn": [
+              "SendDashswagDashemailLogGroup"
+            ]
+          },
+          "SendDashswagDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SendDashswagDashemailLambdaFunction"
+              },
+              "CodeSha256": "4U3JrObU8gfNh1MSgx/By7VZuay/jyJ6DjQJ/t/jVLA="
+            }
+          },
+          "FindDashpeopleDashneedingDashswagEventsRuleSchedule1": {
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+              "ScheduleExpression": "rate(6 hours)",
+              "State": "ENABLED",
+              "Targets": [
+                {
+                  "Arn": {
+                    "Fn::GetAtt": [
+                      "FindDashpeopleDashneedingDashswagLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Id": "find-people-needing-swagSchedule"
+                }
+              ]
+            }
+          },
+          "FindDashpeopleDashneedingDashswagLambdaPermissionEventsRuleSchedule1": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "FindDashpeopleDashneedingDashswagLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "events.amazonaws.com",
+              "SourceArn": {
+                "Fn::GetAtt": [
+                  "FindDashpeopleDashneedingDashswagEventsRuleSchedule1",
+                  "Arn"
+                ]
+              }
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-certification"
+            }
+          },
+          "ApiGatewayResourceGeneratecertificate": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "generateCertificate",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceAuth0getemailfromuid": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "Auth0GetEmailFromUid",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodGeneratecertificatePost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceGeneratecertificate"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GenerateDashcertificateLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodAuth0getemailfromuidPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceAuth0getemailfromuid"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetDashemailLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1515532914403": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodGeneratecertificatePost",
+              "ApiGatewayMethodAuth0getemailfromuidPost"
+            ]
+          },
+          "GenerateDashcertificateLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GenerateDashcertificateLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetDashemailLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetDashemailLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "SNSTopicCertificatesToEmail": {
+            "Type": "AWS::SNS::Topic",
+            "Properties": {
+              "TopicName": "CertificatesToEmail",
+              "DisplayName": "Topic to email certificates",
+              "Subscription": [
+                {
+                  "Endpoint": {
+                    "Fn::GetAtt": [
+                      "SendDashemailLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Protocol": "lambda"
+                }
+              ]
+            }
+          },
+          "SendDashemailLambdaPermissionCertificatesToEmailSNS": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SendDashemailLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "sns.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:sns:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "CertificatesToEmail"
+                  ]
+                ]
+              }
+            }
+          },
+          "SNSTopicSwagToEmail": {
+            "Type": "AWS::SNS::Topic",
+            "Properties": {
+              "TopicName": "SwagToEmail",
+              "DisplayName": "Topic to email swag",
+              "Subscription": [
+                {
+                  "Endpoint": {
+                    "Fn::GetAtt": [
+                      "SendDashswagDashemailLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Protocol": "lambda"
+                }
+              ]
+            }
+          },
+          "SendDashswagDashemailLambdaPermissionSwagToEmailSNS": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SendDashswagDashemailLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "sns.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:sns:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "SwagToEmail"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            }
+          },
+          "GenerateDashcertificateLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GenerateDashcertificateLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA"
+            }
+          },
+          "SendDashemailLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SendDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA"
+            }
+          },
+          "GetDashemailLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA"
+            }
+          },
+          "FindDashpeopleDashneedingDashswagLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "FindDashpeopleDashneedingDashswagLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA"
+            }
+          },
+          "SendDashswagDashemailLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SendDashswagDashemailLambdaVersion4U3JrObU8gfNh1MSgxBy7VZuayjyJ6DjQJtjVLA"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.us-east-1.amazonaws.com/dev"
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "coreCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "stage": "dev",
+      "kmsKeyArn": "arn:aws:kms:us-east-1:715633473519:key/05a428aa-b601-43fb-a87c-6be29a0947ee",
+      "CertificatesTopic": {
+        "Fn::Join": [
+          ":",
+          [
+            "arn",
+            "aws",
+            "sns",
+            {
+              "Ref": "AWS::Region"
+            },
+            {
+              "Ref": "AWS::AccountId"
+            },
+            "CertificatesToEmail"
+          ]
+        ]
+      },
+      "SwagTopic": {
+        "Fn::Join": [
+          ":",
+          [
+            "arn",
+            "aws",
+            "sns",
+            {
+              "Ref": "AWS::Region"
+            },
+            {
+              "Ref": "AWS::AccountId"
+            },
+            "SwagToEmail"
+          ]
+        ]
+      }
+    },
+    "plugins": [
+      "serverless-python-requirements"
+    ],
+    "functions": {
+      "generate-certificate": {
+        "name": "GenerateCertificate",
+        "handler": "handler.generate_certificate",
+        "role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+        "events": [
+          {
+            "http": "POST generateCertificate"
+          }
+        ],
+        "package": {},
+        "vpc": {}
+      },
+      "send-email": {
+        "name": "SendEmail",
+        "handler": "handler.send_email",
+        "role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+        "events": [
+          {
+            "sns": {
+              "topicName": "CertificatesToEmail",
+              "displayName": "Topic to email certificates"
+            }
+          }
+        ],
+        "package": {},
+        "vpc": {}
+      },
+      "get-email": {
+        "name": "Auth0GetEmailFromUid",
+        "handler": "handler.get_email_lambda",
+        "role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+        "events": [
+          {
+            "http": "POST Auth0GetEmailFromUid"
+          }
+        ],
+        "package": {},
+        "vpc": {}
+      },
+      "find-people-needing-swag": {
+        "name": "FindPeopleNeedingSwag",
+        "handler": "handler.find_people_needing_swag",
+        "role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+        "events": [
+          {
+            "schedule": "rate(6 hours)"
+          }
+        ],
+        "package": {},
+        "vpc": {}
+      },
+      "send-swag-email": {
+        "name": "SendSwagEmail",
+        "handler": "handler.send_swag_email",
+        "role": "arn:aws:iam::715633473519:role/lambda_graphacademy",
+        "events": [
+          {
+            "sns": {
+              "topicName": "SwagToEmail",
+              "displayName": "Topic to email swag"
+            }
+          }
+        ],
+        "package": {},
+        "vpc": {}
+      }
+    },
+    "artifact": "/Users/administrator/repos/classmarker-integration/.serverless/certification.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/certification/dev/1515532914002-2018-01-09T21:21:54.002Z",
+    "artifact": "certification.zip"
+  }
+}
