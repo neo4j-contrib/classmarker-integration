@@ -53,5 +53,7 @@ def get_email_address(user):
     profile = get_profile(user)
     if 'email' in profile:
         return profile['email']
+    elif 'user_metadata' in profile and 'twitter_email' in profile['user_metadata']:
+        return profile['user_metadata']['twitter_email']
     else:
         return False
