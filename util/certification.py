@@ -4,8 +4,8 @@ record_attempt_query = """
 MERGE (u:User {auth0_key:{auth0_key}})
 ON CREATE
 SET u.email={email},
-    u.firstName={given_name},
-    u.lastName={family_name}
+    u.first_name={given_name},
+    u.last_name={family_name}
 MERGE (e:Exam {id: [{auth0_key}, toString({test_id}), toString({date})] })
 ON CREATE SET 
     e:Certification,
