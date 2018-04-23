@@ -4,6 +4,7 @@ import hashlib
 import base64
 import os
 import boto3
+import neo4j
 
 import util.certificate as certificate
 import util.neo4j_accounts as accts
@@ -16,7 +17,8 @@ import util.email as email
 
 db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
                                  auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
-                                                 decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])))
+                                                 decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])),
+                                 max_retry_time=15)
 
 
 def get_email_lambda(request, context):
@@ -66,7 +68,10 @@ def generate_certificate(request, context):
         "ip": result["ip_address"]
     }
 
-    certification.record_attempt(db_driver, event)
+    try:
+        certification.record_attempt(db_driver, event)
+    except neo4j.exceptions.ServiceUnavailable as exception:
+        return {"statusCode": 500, "body": exception, "headers": {}}
 
     print("generate_certificate request: {request}".format(request=request))
 
