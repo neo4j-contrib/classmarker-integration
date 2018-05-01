@@ -71,7 +71,7 @@ def generate_certificate(request, context):
     try:
         certification.record_attempt(db_driver, event)
     except neo4j.exceptions.ServiceUnavailable as exception:
-        return {"statusCode": 500, "body": exception, "headers": {}}
+        return {"statusCode": 500, "body": str(exception), "headers": {}}
 
     print("generate_certificate request: {request}".format(request=request))
 
