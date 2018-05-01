@@ -107,7 +107,7 @@ where exists(u.auth0_key)
 AND exists(u.first_name)
 AND exists(u.last_name)
 AND not exists(swag.email_sent)
-return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, u.email as email
+return u.first_name AS firstName, u.last_name AS lastName, swag.code AS swagCode, u.email as email
 """
 
 
