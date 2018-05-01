@@ -2,10 +2,9 @@ import util.neo4j_accounts as accts
 
 record_attempt_query = """
 MERGE (u:User {auth0_key:{auth0_key}})
-ON CREATE
-SET u.email={email},
-    u.first_name={given_name},
-    u.last_name={family_name}
+SET u.email = coalesce(u.email, {email}),
+    u.first_name = coalesce(u.first_name, {given_name}),
+    u.last_name=coalesce(u.last_name, {family_name})
 MERGE (e:Exam {id: [{auth0_key}, toString({test_id}), toString({date})] })
 ON CREATE SET 
     e:Certification,
@@ -104,11 +103,10 @@ def assign_swag_code(db_driver, auth0_key):
 unsent_swag_emails_query = """
 MATCH (u:User)<-[:ISSUED_TO]-(swag)
 where exists(u.auth0_key) 
-AND exists(u.firstName)
-AND exists(u.lastName)
+AND exists(u.first_name)
+AND exists(u.last_name)
 AND not exists(swag.email_sent)
 return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, u.email as email
-//return u.firstName AS firstName, u.lastName AS lastName, swag.code AS swagCode, "m.h.needham@gmail.com" as email
 """
 
 
