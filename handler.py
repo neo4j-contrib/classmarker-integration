@@ -54,6 +54,8 @@ def generate_certificate(request, context):
 
     event = {
         "user_id": result["link_result_id"],
+        "given_name": result["first"],
+        "family_name": result["last"],
         "name": "{first} {last}".format(first=result["first"], last=result["last"]),
         "email": accts.get_email_address(result["cm_user_id"]),
         "auth0_key": result["cm_user_id"],

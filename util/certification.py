@@ -27,9 +27,16 @@ def record_attempt(db_driver, event):
     profile = accts.get_profile(event['auth0_key'])
     print("Looking up profile:", profile)
 
-    user_metadata = profile["user_metadata"]
-    test_data["given_name"] = user_metadata.get("given_name")
-    test_data["family_name"] = user_metadata.get("family_name")
+    if "user_metadata" in profile:
+        user_metadata = profile["user_metadata"]
+        test_data["given_name"] = user_metadata.get("given_name")
+        test_data["family_name"] = user_metadata.get("family_name")
+
+    if "given_name" in profile:
+        test_data["given_name"] = profile.get("given_name")
+
+    if "family_name" in profile:
+        test_data["family_name"] = profile.get("family_name")
 
     print("Record attempt:", test_data)
     with db_driver.session() as session:
