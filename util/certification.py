@@ -29,10 +29,14 @@ def record_attempt(db_driver, event):
     print("Looking up profile:", profile)
 
     if "user_metadata" in profile:
-        print("Overriding given name and family name from FullContact")
         user_metadata = profile["user_metadata"]
-        test_data["given_name"] = user_metadata.get("given_name")
-        test_data["family_name"] = user_metadata.get("family_name")
+        if "given_name" in user_metadata:
+            print("Overriding given name from FullContact (user_metadata)")
+            test_data["given_name"] = user_metadata.get("given_name")
+
+        if "family_name" in user_metadata:
+            print("Overriding family name from FullContact (user_metadata)")
+            test_data["family_name"] = user_metadata.get("family_name")
 
     if "given_name" in profile:
         print("Overriding given name from FullContact")
