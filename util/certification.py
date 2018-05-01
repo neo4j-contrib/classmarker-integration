@@ -25,12 +25,12 @@ def record_attempt(db_driver, event):
     test_data = event
 
     profile = accts.get_profile(event['auth0_key'])
-    print(profile)
+    print("Looking up profile:", profile)
 
     test_data["given_name"] = profile.get("given_name")
     test_data["family_name"] = profile.get("family_name")
 
-    print(record_attempt_query)
+    print("Record attempt:", record_attempt_query, test_data)
     with db_driver.session() as session:
         results = session.write_transaction(lambda tx: tx.run(record_attempt_query, parameters=test_data))
         results.consume()
