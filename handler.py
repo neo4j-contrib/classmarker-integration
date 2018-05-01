@@ -33,7 +33,7 @@ def get_email_lambda(request, context):
 
 
 def generate_certificate(request, context):
-    print("recording certificate: {request}".format(request=request))
+    print("Certificate request:", request)
 
     json_payload = json.loads(request["body"])
     result = json_payload["result"]
@@ -68,17 +68,18 @@ def generate_certificate(request, context):
         "ip": result["ip_address"]
     }
 
+    print("Recording certificate attempt")
     try:
         certification.record_attempt(db_driver, event)
     except neo4j.exceptions.ServiceUnavailable as exception:
+        print("Failed to record certificate attempt", exception)
         return {"statusCode": 500, "body": str(exception), "headers": {}}
 
-    print("generate_certificate request: {request}".format(request=request))
-
     if not result["passed"]:
-        print("Not generating certificate for {event}".format(event=event))
+        print("Not generating certificate - did not pass!")
         certificate_path = None
     else:
+        print("Assigning swag code")
         certification.assign_swag_code(db_driver, event.get('auth0_key'))
 
         certificate_number = certification.generate_certificate_number(db_driver, event)[0]["certificate_number"]
@@ -88,11 +89,12 @@ def generate_certificate(request, context):
         event["certificate"] = certificate_path
         certification.save_certificate_path(db_driver, event)
 
-        print("Generating certificate for {event}".format(event=event))
-        print("Certificate:", certificate_path, "Certificate Number: ", certificate_number)
+        print("Generating certificate")
+        print("Certificate generated:", certificate_path, "Certificate Number: ", certificate_number)
 
         sns = boto3.client('sns')
 
+        print("Adding message to topic for certificate to be emailed")
         topic_arn = create_topic_arn(context, "CertificatesToEmail")
         sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
 
