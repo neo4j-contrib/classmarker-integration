@@ -45,7 +45,7 @@ def generate(event):
         with open(local_html_file_name, "wb") as file:
             file.write(rendered.encode('utf-8'))
 
-        html_location = generate_pdf_location(event)
+        html_location = generate_html_location(event)
         with open(local_html_file_name, 'rb') as data:
             s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=html_location)
 
