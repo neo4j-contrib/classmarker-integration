@@ -18,6 +18,7 @@ def suffix(d):
 
 
 def generate(event):
+    print("Generating certificate: " + event)
     t = datetime.datetime.fromtimestamp(event["date"])
     event["date_formatted"] = t.strftime('%a {S} %b %Y').replace('{S}', str(t.day) + suffix(t.day))
 
