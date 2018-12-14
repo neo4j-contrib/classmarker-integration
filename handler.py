@@ -24,7 +24,7 @@ db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GR
 def get_email_lambda(request, context):
     json_payload = json.loads(request["body"])
     user_id = json_payload["user_id"]
- 
+
     if ('Accept' in request['headers'] and request['headers']['Accept'].find('application/json') >= 0):
       return {"statusCode": 200, "body": json.dumps({"email": accts.get_email_address(user_id), "auth0": user_id}), "headers": {"Content-Type": "application/json"}}
     else:
@@ -94,11 +94,11 @@ def generate_certificate(request, context):
         print("Generating certificate")
         print("Certificate generated:", certificate_path, "Certificate Number: ", certificate_number)
 
-        sns = boto3.client('sns')
-
-        print("Adding message to topic for certificate to be emailed")
-        topic_arn = create_topic_arn(context, "CertificatesToEmail")
-        sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
+        # sns = boto3.client('sns')
+        #
+        # print("Adding message to topic for certificate to be emailed")
+        # topic_arn = create_topic_arn(context, "CertificatesToEmail")
+        # sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
 

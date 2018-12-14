@@ -39,16 +39,21 @@ def generate(event):
                                    date=event["date_formatted"]
                                    )
 
+        s3 = boto3.client('s3')
+
         local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
         with open(local_html_file_name, "wb") as file:
             file.write(rendered.encode('utf-8'))
+
+        html_location = generate_pdf_location(event)
+        with open(local_html_file_name, 'rb') as data:
+            s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=html_location)
 
         local_pdf_file_name = "/tmp/{file_name}.pdf".format(file_name=user_id)
         wkhtmltopdf(local_html_file_name, local_pdf_file_name)
 
         pdf_location = generate_pdf_location(event)
 
-        s3 = boto3.client('s3')
         with open(local_pdf_file_name, 'rb') as data:
             s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=pdf_location)
 
@@ -59,6 +64,8 @@ def generate(event):
 def generate_pdf_location(event):
     return "certificates/{certificate_hash}.pdf".format(certificate_hash=generate_certificate_hash(event))
 
+def generate_html_location(event):
+    return "certificates/{certificate_hash}.html".format(certificate_hash=generate_certificate_hash(event))
 
 def generate_certificate_hash(event):
     unhashed_key = "{0}-{1}-{2}".format(event["user_id"], event["test_id"], event["auth0_key"])
