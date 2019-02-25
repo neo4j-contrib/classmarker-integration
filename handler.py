@@ -11,12 +11,12 @@ import util.neo4j_accounts as accts
 import util.certification as certification
 
 from util.encryption import decrypt_value, decrypt_value_str
-from neo4j.v1 import GraphDatabase, basic_auth
+from neo4j import GraphDatabase
 
 import util.email as email
 
-db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
-                                 auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
+db_driver = GraphDatabase.driver("bolt+routing://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
+                                 auth=(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
                                                  decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])),
                                  max_retry_time=15)
 
