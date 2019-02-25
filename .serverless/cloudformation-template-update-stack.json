@@ -42,7 +42,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/certification/dev/1521558933253-2018-03-20T15:15:33.253Z/certification.zip"
+          "S3Key": "serverless/certification/dev/1545437600755-2018-12-22T00:13:20.755Z/certification.zip"
         },
         "FunctionName": "GenerateCertificate",
         "Handler": "handler.generate_certificate",
@@ -65,14 +65,14 @@
         "GenerateDashcertificateLogGroup"
       ]
     },
-    "GenerateDashcertificateLambdaVersion4zW0CeCuStrbpPmf70MOT5HkbO2JxFy1DkwSH3Zc": {
+    "GenerateDashcertificateLambdaVersionbmmMjJkMLq1Dtr2rWpgC9jW63AO3JSJS4yA6XRAhxM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GenerateDashcertificateLambdaFunction"
         },
-        "CodeSha256": "o6lDc+VJcSSfhsPyPxVCAZnowkjjFtTMi/TZ6kldxmE="
+        "CodeSha256": "nI7ninotv3BQDCpmPt7JNgXEp6pcZ2x0XoYGean4dNE="
       }
     },
     "SendDashemailLambdaFunction": {
@@ -82,7 +82,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/certification/dev/1521558933253-2018-03-20T15:15:33.253Z/certification.zip"
+          "S3Key": "serverless/certification/dev/1545437600755-2018-12-22T00:13:20.755Z/certification.zip"
         },
         "FunctionName": "SendEmail",
         "Handler": "handler.send_email",
@@ -105,14 +105,14 @@
         "SendDashemailLogGroup"
       ]
     },
-    "SendDashemailLambdaVersion2IbocIGEyURLST56LNebjHlWIpCuxBJS4qzHWgt2o": {
+    "SendDashemailLambdaVersionPbZeNiJXdSrotzAbYuDDVLFNi6PDqb9myzMpiO3kws": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SendDashemailLambdaFunction"
         },
-        "CodeSha256": "o6lDc+VJcSSfhsPyPxVCAZnowkjjFtTMi/TZ6kldxmE="
+        "CodeSha256": "nI7ninotv3BQDCpmPt7JNgXEp6pcZ2x0XoYGean4dNE="
       }
     },
     "GetDashemailLambdaFunction": {
@@ -122,7 +122,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/certification/dev/1521558933253-2018-03-20T15:15:33.253Z/certification.zip"
+          "S3Key": "serverless/certification/dev/1545437600755-2018-12-22T00:13:20.755Z/certification.zip"
         },
         "FunctionName": "Auth0GetEmailFromUid",
         "Handler": "handler.get_email_lambda",
@@ -145,14 +145,14 @@
         "GetDashemailLogGroup"
       ]
     },
-    "GetDashemailLambdaVersion0Lo2kUCd728IwrVIPqEtXrmWBJWKGtHKYWQBw": {
+    "GetDashemailLambdaVersioncUyJVT4OzuQfnw883AilEkZGUdv8WnLQAid5MXKjii8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetDashemailLambdaFunction"
         },
-        "CodeSha256": "o6lDc+VJcSSfhsPyPxVCAZnowkjjFtTMi/TZ6kldxmE="
+        "CodeSha256": "nI7ninotv3BQDCpmPt7JNgXEp6pcZ2x0XoYGean4dNE="
       }
     },
     "FindDashpeopleDashneedingDashswagLambdaFunction": {
@@ -162,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/certification/dev/1521558933253-2018-03-20T15:15:33.253Z/certification.zip"
+          "S3Key": "serverless/certification/dev/1545437600755-2018-12-22T00:13:20.755Z/certification.zip"
         },
         "FunctionName": "FindPeopleNeedingSwag",
         "Handler": "handler.find_people_needing_swag",
@@ -185,14 +185,14 @@
         "FindDashpeopleDashneedingDashswagLogGroup"
       ]
     },
-    "FindDashpeopleDashneedingDashswagLambdaVersionfyJCeorUXY2FUQOAMG89TtLoca8P3kwpLzB0ZWvIE": {
+    "FindDashpeopleDashneedingDashswagLambdaVersionWEMpLgkwrG1kPjoACfflqB9sBHqJLaBAaJ2t4bnB1QU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FindDashpeopleDashneedingDashswagLambdaFunction"
         },
-        "CodeSha256": "o6lDc+VJcSSfhsPyPxVCAZnowkjjFtTMi/TZ6kldxmE="
+        "CodeSha256": "nI7ninotv3BQDCpmPt7JNgXEp6pcZ2x0XoYGean4dNE="
       }
     },
     "SendDashswagDashemailLambdaFunction": {
@@ -202,7 +202,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/certification/dev/1521558933253-2018-03-20T15:15:33.253Z/certification.zip"
+          "S3Key": "serverless/certification/dev/1545437600755-2018-12-22T00:13:20.755Z/certification.zip"
         },
         "FunctionName": "SendSwagEmail",
         "Handler": "handler.send_swag_email",
@@ -225,20 +225,20 @@
         "SendDashswagDashemailLogGroup"
       ]
     },
-    "SendDashswagDashemailLambdaVersionjz5Jq3oy88O7mrgtYJSIdEhjbZV1AiX4Gipgf523Lg": {
+    "SendDashswagDashemailLambdaVersioncPWStKpBIXN03s62DGOhP0ghMGLwzpHzh2apAOZkA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SendDashswagDashemailLambdaFunction"
         },
-        "CodeSha256": "o6lDc+VJcSSfhsPyPxVCAZnowkjjFtTMi/TZ6kldxmE="
+        "CodeSha256": "nI7ninotv3BQDCpmPt7JNgXEp6pcZ2x0XoYGean4dNE="
       }
     },
     "FindDashpeopleDashneedingDashswagEventsRuleSchedule1": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-        "ScheduleExpression": "rate(6 hours)",
+        "ScheduleExpression": "rate(2 minutes)",
         "State": "ENABLED",
         "Targets": [
           {
@@ -263,7 +263,17 @@
           ]
         },
         "Action": "lambda:InvokeFunction",
-        "Principal": "events.amazonaws.com",
+        "Principal": {
+          "Fn::Join": [
+            "",
+            [
+              "events.",
+              {
+                "Ref": "AWS::URLSuffix"
+              }
+            ]
+          ]
+        },
         "SourceArn": {
           "Fn::GetAtt": [
             "FindDashpeopleDashneedingDashswagEventsRuleSchedule1",
@@ -333,7 +343,11 @@
             "Fn::Join": [
               "",
               [
-                "arn:aws:apigateway:",
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
                 {
                   "Ref": "AWS::Region"
                 },
@@ -372,7 +386,11 @@
             "Fn::Join": [
               "",
               [
-                "arn:aws:apigateway:",
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
                 {
                   "Ref": "AWS::Region"
                 },
@@ -391,7 +409,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1521558934525": {
+    "ApiGatewayDeployment1545437601573": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -414,12 +432,26 @@
           ]
         },
         "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
+        "Principal": {
+          "Fn::Join": [
+            "",
+            [
+              "apigateway.",
+              {
+                "Ref": "AWS::URLSuffix"
+              }
+            ]
+          ]
+        },
         "SourceArn": {
           "Fn::Join": [
             "",
             [
-              "arn:aws:execute-api:",
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
               {
                 "Ref": "AWS::Region"
               },
@@ -447,12 +479,26 @@
           ]
         },
         "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
+        "Principal": {
+          "Fn::Join": [
+            "",
+            [
+              "apigateway.",
+              {
+                "Ref": "AWS::URLSuffix"
+              }
+            ]
+          ]
+        },
         "SourceArn": {
           "Fn::Join": [
             "",
             [
-              "arn:aws:execute-api:",
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
               {
                 "Ref": "AWS::Region"
               },
@@ -498,12 +544,26 @@
           ]
         },
         "Action": "lambda:InvokeFunction",
-        "Principal": "sns.amazonaws.com",
+        "Principal": {
+          "Fn::Join": [
+            "",
+            [
+              "sns.",
+              {
+                "Ref": "AWS::URLSuffix"
+              }
+            ]
+          ]
+        },
         "SourceArn": {
           "Fn::Join": [
             "",
             [
-              "arn:aws:sns:",
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":sns:",
               {
                 "Ref": "AWS::Region"
               },
@@ -546,12 +606,26 @@
           ]
         },
         "Action": "lambda:InvokeFunction",
-        "Principal": "sns.amazonaws.com",
+        "Principal": {
+          "Fn::Join": [
+            "",
+            [
+              "sns.",
+              {
+                "Ref": "AWS::URLSuffix"
+              }
+            ]
+          ]
+        },
         "SourceArn": {
           "Fn::Join": [
             "",
             [
-              "arn:aws:sns:",
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":sns:",
               {
                 "Ref": "AWS::Region"
               },
@@ -576,31 +650,31 @@
     "GenerateDashcertificateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GenerateDashcertificateLambdaVersion4zW0CeCuStrbpPmf70MOT5HkbO2JxFy1DkwSH3Zc"
+        "Ref": "GenerateDashcertificateLambdaVersionbmmMjJkMLq1Dtr2rWpgC9jW63AO3JSJS4yA6XRAhxM"
       }
     },
     "SendDashemailLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SendDashemailLambdaVersion2IbocIGEyURLST56LNebjHlWIpCuxBJS4qzHWgt2o"
+        "Ref": "SendDashemailLambdaVersionPbZeNiJXdSrotzAbYuDDVLFNi6PDqb9myzMpiO3kws"
       }
     },
     "GetDashemailLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetDashemailLambdaVersion0Lo2kUCd728IwrVIPqEtXrmWBJWKGtHKYWQBw"
+        "Ref": "GetDashemailLambdaVersioncUyJVT4OzuQfnw883AilEkZGUdv8WnLQAid5MXKjii8"
       }
     },
     "FindDashpeopleDashneedingDashswagLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FindDashpeopleDashneedingDashswagLambdaVersionfyJCeorUXY2FUQOAMG89TtLoca8P3kwpLzB0ZWvIE"
+        "Ref": "FindDashpeopleDashneedingDashswagLambdaVersionWEMpLgkwrG1kPjoACfflqB9sBHqJLaBAaJ2t4bnB1QU"
       }
     },
     "SendDashswagDashemailLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SendDashswagDashemailLambdaVersionjz5Jq3oy88O7mrgtYJSIdEhjbZV1AiX4Gipgf523Lg"
+        "Ref": "SendDashswagDashemailLambdaVersioncPWStKpBIXN03s62DGOhP0ghMGLwzpHzh2apAOZkA"
       }
     },
     "ServiceEndpoint": {
@@ -613,7 +687,11 @@
             {
               "Ref": "ApiGatewayRestApi"
             },
-            ".execute-api.us-east-1.amazonaws.com/dev"
+            ".execute-api.us-east-1.",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev"
           ]
         ]
       }
