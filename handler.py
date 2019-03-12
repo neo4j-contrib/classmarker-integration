@@ -94,11 +94,10 @@ def generate_certificate(request, context):
         print("Generating certificate")
         print("Certificate generated:", certificate_path, "Certificate Number: ", certificate_number)
 
-        # sns = boto3.client('sns')
-        #
-        # print("Adding message to topic for certificate to be emailed")
-        # topic_arn = create_topic_arn(context, "CertificatesToEmail")
-        # sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
+        sns = boto3.client('sns')
+        print("Adding message to topic for certificate to be emailed")
+        topic_arn = create_topic_arn(context, "CertificatesToEmail")
+        sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
 
