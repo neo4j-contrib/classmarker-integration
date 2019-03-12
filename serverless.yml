@@ -5,6 +5,9 @@ service: certification
 custom:
   stage: "${opt:stage, self:provider.stage}"
   kmsKeyArn: ${file(env.yml):${self:custom.stage}.KEY_ARN}
+  dockerize:
+    CIfalse: true
+    CItrue: false
   CertificatesTopic:
     Fn::Join:
       - ":"
@@ -24,8 +27,7 @@ custom:
         - Ref: AWS::AccountId
         - SwagToEmail
   pythonRequirements:
-    dockerizePip: true
-
+    dockerizePip: ${self:custom.dockerize.CI${env:CI}, self:custom.isCI.CIfalse}
 
 provider:
   name: aws
