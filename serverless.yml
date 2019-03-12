@@ -27,7 +27,7 @@ custom:
         - Ref: AWS::AccountId
         - SwagToEmail
   pythonRequirements:
-    dockerizePip: ${self:custom.dockerize.CI${env:CI}, self:custom.isCI.CIfalse}
+    dockerizePip: ${self:custom.dockerize.CI${env:CI, 'false'}
 
 provider:
   name: aws
