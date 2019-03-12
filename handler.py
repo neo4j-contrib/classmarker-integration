@@ -11,12 +11,12 @@ import util.neo4j_accounts as accts
 import util.certification as certification
 
 from util.encryption import decrypt_value, decrypt_value_str
-from neo4j.v1 import GraphDatabase, basic_auth
+from neo4j import GraphDatabase
 
 import util.email as email
 
-db_driver = GraphDatabase.driver("bolt://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
-                                 auth=basic_auth(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
+db_driver = GraphDatabase.driver("bolt+routing://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
+                                 auth=(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
                                                  decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])),
                                  max_retry_time=15)
 
@@ -94,11 +94,10 @@ def generate_certificate(request, context):
         print("Generating certificate")
         print("Certificate generated:", certificate_path, "Certificate Number: ", certificate_number)
 
-        # sns = boto3.client('sns')
-        #
-        # print("Adding message to topic for certificate to be emailed")
-        # topic_arn = create_topic_arn(context, "CertificatesToEmail")
-        # sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
+        sns = boto3.client('sns')
+        print("Adding message to topic for certificate to be emailed")
+        topic_arn = create_topic_arn(context, "CertificatesToEmail")
+        sns.publish(TopicArn=(topic_arn), Message=json.dumps(event))
 
     return {"statusCode": 200, "body": certificate_path, "headers": {}}
 
