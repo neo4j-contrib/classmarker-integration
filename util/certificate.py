@@ -12,7 +12,6 @@ app = flask.Flask('my app')
 
 BUCKET_NAME = "graphacademy.neo4j.com"
 
-
 def suffix(d):
     return 'th' if 11 <= d <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(d % 10, 'th')
 
@@ -26,10 +25,22 @@ def generate(event):
 
     with app.app_context():
         with open("static/neo4j.png", "rb") as neo4j_image:
-            base_64_image = base64.b64encode(neo4j_image.read())
+            base_64_logo_image = base64.b64encode(neo4j_image.read())
 
-        rendered = render_template('certificate.html',
-                                   base_64_image=base_64_image.decode("utf-8"),
+        with open("static/certified-transparent-logo.png", "rb") as cert_image:
+            base_64_cert_image = base64.b64encode(cert_image.read())
+
+        with open("static/emil-signature.png", "rb") as sig_image:
+            base_64_sig_image = base64.b64encode(sig_image.read())
+
+        with open("static/grid_graph.png", "rb") as bg_image:
+            base_64_bg_image = base64.b64encode(bg_image.read())
+
+        rendered = render_template('certificate_new.html',
+                                   base_64_logo_image=base_64_logo_image.decode("utf-8"),
+                                   base_64_cert_image=base_64_cert_image.decode("utf-8"),
+                                   base_64_sig_image=base_64_sig_image.decode("utf-8"),
+                                   base_64_bg_image=base_64_bg_image.decode("utf-8"),
                                    name=event["name"],
                                    test_name="Neo4j Certification",
                                    score_percentage=event["score_percentage"],

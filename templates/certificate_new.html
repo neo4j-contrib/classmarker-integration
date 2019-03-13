@@ -1,0 +1,90 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+  <style>
+    body {
+      font-size: 1.5em;
+      text-align: center;
+    }
+    h1 {
+      margin: 1.5em;
+      color: #3889BF;
+    }
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      margin: 0em;
+      border: 5px double;
+      page-break-after: always;
+      page-break-inside: avoid;
+      width: 99%;
+      height: 99%;
+    }
+    .award {
+      margin: 7em 0 6em 0;
+    }
+    .award .line1 {
+      color: #717172;
+      font-weight: lighter;
+      margin: 0;
+    }
+    .award h2 {
+      margin-top: 0.2em;
+    }
+    .award .cert {
+      font-style: italic;
+    }
+    .score {
+      margin-bottom: 2em;
+    }
+    .cert-info {
+      font-size: 0.85em;
+      text-align: left;
+      padding-left: 310px;
+    }
+    .date {
+      font-size: 0.8em;
+      text-align: right;
+    }
+    #logo {
+      position: absolute;
+      bottom: 5;
+      right: 5;
+    }
+    #cert {
+      position: absolute;
+      bottom: 5;
+      left: 5;
+    }
+    #sig {
+      position: absolute;
+      bottom: 60;
+      left: 310;
+    }
+  </style>
+  <body>
+    <div class="container">
+
+      <h1>Neo4j Certified Professional</h1>
+      <div class="award">
+        <p class="line1">Presented to:</p>
+        <h2>{{name}}</h2>
+        <p class="cert">Neo4j certifies you as a Neo4j Professional</p>
+      </div>
+      <p class="score">
+        Test Name: {{ test_name }}
+        <br />
+        Score: {{score_percentage}}% ({{score_absolute}} out of {{ score_maximum }})
+        <br />
+        Certificate Number: {{certificate_number}}
+      </p>
+      <p class="cert-info">The certificate holder is recognized by Neo4j GraphAcademy for Professional level knowledge of Neo4j.</p>
+      <p class="date">{{ date }}</p>
+      <img id="sig" src="data:image/png;base64, {{ base_64_sig_image }}" width="200" />
+      <img id="logo" src="data:image/png;base64, {{ base_64_logo_image }}" width="200" />
+      <img id="cert" src="data:image/png;base64, {{ base_64_cert_image }}" width="300" />
+    </div>
+  </body>
+</html>
