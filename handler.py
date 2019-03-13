@@ -15,9 +15,19 @@ from neo4j import GraphDatabase
 
 import util.email as email
 
-db_driver = GraphDatabase.driver("bolt+routing://%s" % (decrypt_value_str(os.environ['GRAPHACADEMY_DB_HOST_PORT'])),
-                                 auth=(decrypt_value_str(os.environ['GRAPHACADEMY_DB_USER']),
-                                                 decrypt_value_str(os.environ['GRAPHACADEMY_DB_PW'])),
+ssmc = boto3.client('ssm')
+
+def get_ssm_param(key):
+  resp = ssmc.get_parameter(
+    Name=key,
+    WithDecryption=True
+  )
+  return resp['Parameter']['Value']
+
+
+db_driver = GraphDatabase.driver("bolt+routing://%s" % (get_ssm_param('com.neo4j.graphacademy.dbhostport')),
+                                 auth=(get_ssm_param('com.neo4j.graphacademy.dbuser'),
+                                       get_ssm_param('com.neo4j.graphacademy.dbpassword')),
                                  max_retry_time=15)
 
 
@@ -42,9 +52,9 @@ def generate_certificate(request, context):
     if not expected_hmac:
         raise Exception("No HMAC provided. Request did not come from Classmarker so not generating certificate")
 
-    cm_secret_phrase = decrypt_value(os.environ['CM_SECRET_PHRASE'])
+    cm_secret_phrase = get_ssm_param('com.neo4j.graphacademy.classmarker.secret')
 
-    dig = hmac.new(cm_secret_phrase, msg=request["body"].encode("utf-8"), digestmod=hashlib.sha256).digest()
+    dig = hmac.new(cm_secret_phrase.encode(), msg=request["body"].encode("utf-8"), digestmod=hashlib.sha256).digest()
     generated_hmac = base64.b64encode(dig).decode()
 
     if expected_hmac != generated_hmac:
