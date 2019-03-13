@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Copyright (c) 2002-2017 "Neo Technology,"
-# Network Engine for Objects in Lund AB [http://neotechnology.com]
+# Copyright (c) 2002-2018 "Neo4j,"
+# Neo4j Sweden AB [http://neo4j.com]
 #
 # This file is part of Neo4j.
 #
@@ -18,15 +18,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .api import *
-from .direct import *
-from .exceptions import *
-from .result import *
-from .routing import *
-from .security import *
-from .session import *
-from .types import *
 
-# Register supported URI schemes
-GraphDatabase.uri_schemes["bolt"] = DirectDriver
-GraphDatabase.uri_schemes["bolt+routing"] = RoutingDriver
+from .. import *
+
+
+from warnings import warn as _warn
+_warn("The 'neo4j.v1' package is deprecated, import from 'neo4j' instead", category=DeprecationWarning, stacklevel=2)

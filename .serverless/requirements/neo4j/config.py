@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Copyright (c) 2002-2017 "Neo Technology,"
-# Network Engine for Objects in Lund AB [http://neotechnology.com]
+# Copyright (c) 2002-2018 "Neo4j,"
+# Neo4j Sweden AB [http://neo4j.com]
 #
 # This file is part of Neo4j.
 #
@@ -17,6 +17,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+from sys import platform, version_info
 
 from neo4j.meta import version
 
@@ -45,13 +48,14 @@ LOAD_BALANCING_STRATEGY_ROUND_ROBIN = 1
 DEFAULT_LOAD_BALANCING_STRATEGY = LOAD_BALANCING_STRATEGY_LEAST_CONNECTED
 
 # Client name
-DEFAULT_USER_AGENT = "neo4j-python/%s" % version
+DEFAULT_USER_AGENT = "neo4j-python/{} Python/{}.{}.{}-{}-{} ({})".format(
+    *((version,) + tuple(version_info) + (platform,)))
 
 default_config = {
     "auth": None,  # provide your own authentication token such as {"username", "password"}
-    "encrypted": True,
+    "encrypted": None,  # default to have encryption enabled if ssl is available on your platform
     "trust": TRUST_DEFAULT,
-    "der-encoded_server_certificate": None,
+    "der_encoded_server_certificate": None,
 
     "user_agent": DEFAULT_USER_AGENT,
 
@@ -66,5 +70,5 @@ default_config = {
 
     # Routing settings:
     "max_retry_time": DEFAULT_MAX_RETRY_TIME,
-    "load_balancing_strategy": DEFAULT_LOAD_BALANCING_STRATEGY
+    "load_balancing_strategy": DEFAULT_LOAD_BALANCING_STRATEGY,
 }

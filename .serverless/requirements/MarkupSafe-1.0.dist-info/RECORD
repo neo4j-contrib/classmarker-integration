@@ -13,4 +13,4 @@ markupsafe/_compat.py,sha256=r1HE0CpcAZeb-AiTV9wITR91PeLHn0CzZ_XHkYoozpI,565
 markupsafe/_constants.py,sha256=U_xybFQsyXKCgHSfranJnFzo-z9nn9fuBeSk243sE5Q,4795
 markupsafe/_native.py,sha256=E2Un1ysOf-w45d18YCj8UelT5UP7Vt__IuFPYJ7YRIs,1187
 markupsafe/_speedups.c,sha256=B6Mf6Fn33WqkagfwY7q5ZBSm_vJoHDYxDB0Jp_DP7Jw,5936
-markupsafe/_speedups.cpython-36m-x86_64-linux-gnu.so,sha256=8ontten41mg9II36cdUtWA-60RhhUKJ5QJGFD2M2Ct0,32451
+markupsafe/_speedups.cpython-36m-x86_64-linux-gnu.so,sha256=3qVQ1GI8j8CEAHYQv-Xp-NYXks1_LAFxkJr8C-biVGg,32451

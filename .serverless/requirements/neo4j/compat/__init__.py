@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Copyright (c) 2002-2017 "Neo Technology,"
-# Network Engine for Objects in Lund AB [http://neotechnology.com]
+# Copyright (c) 2002-2018 "Neo4j,"
+# Neo4j Sweden AB [http://neo4j.com]
 #
 # This file is part of Neo4j.
 #
@@ -26,6 +26,8 @@ excluded from test coverage.
 """
 
 
+map_type = type(map(str, range(0)))
+
 # Workaround for Python 2/3 type differences
 try:
     unicode
@@ -35,6 +37,15 @@ except NameError:
     integer = int
     string = str
     unicode = str
+    unichr = chr
+
+    def bstr(x):
+        if isinstance(x, bytes):
+            return x
+        elif isinstance(x, str):
+            return x.encode("utf-8")
+        else:
+            return str(x).encode("utf-8")
 
     def ustr(x):
         if isinstance(x, bytes):
@@ -43,6 +54,8 @@ except NameError:
             return x
         else:
             return str(x)
+
+    xstr = ustr
 
     def memoryview_at(view, index):
         return view[index]
@@ -53,6 +66,15 @@ else:
     integer = (int, long)
     string = (str, unicode)
     unicode = unicode
+    unichr = unichr
+
+    def bstr(x):
+        if isinstance(x, str):
+            return x
+        elif isinstance(x, unicode):
+            return x.encode("utf-8")
+        else:
+            return unicode(x).encode("utf-8")
 
     def ustr(x):
         if isinstance(x, str):
@@ -61,6 +83,8 @@ else:
             return x
         else:
             return unicode(x)
+
+    xstr = bstr
 
     def memoryview_at(view, index):
         return ord(view[index])
@@ -97,8 +121,38 @@ else:
         return nanoTime() / 1000000000
 
 
+# Using or importing the ABCs from 'collections' instead of from
+# 'collections.abc' is deprecated, and in 3.8 it will stop working
+try:
+    from collections.abc import Sequence, Mapping
+except ImportError:
+    from collections import Sequence, Mapping
+
+
 # The location of urlparse varies between Python 2 and 3
 try:
-    from urllib.parse import urlparse
+    from urllib.parse import urlparse, parse_qs
 except ImportError:
-    from urlparse import urlparse
+    from urlparse import urlparse, parse_qs
+
+
+def deprecated(message):
+    """ Decorator for deprecating functions and methods.
+
+    ::
+
+        @deprecated("'foo' has been deprecated in favour of 'bar'")
+        def foo(x):
+            pass
+
+    """
+    def f__(f):
+        def f_(*args, **kwargs):
+            from warnings import warn
+            warn(message, category=DeprecationWarning, stacklevel=2)
+            return f(*args, **kwargs)
+        f_.__name__ = f.__name__
+        f_.__doc__ = f.__doc__
+        f_.__dict__.update(f.__dict__)
+        return f_
+    return f__
