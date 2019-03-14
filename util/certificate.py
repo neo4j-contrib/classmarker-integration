@@ -6,7 +6,7 @@ import boto3
 import flask
 from flask import render_template
 
-from util.wkhtmltopdf import wkhtmltopdf
+from util.wkhtmltopdf import wkhtmltopdfV2
 
 app = flask.Flask('my app')
 
