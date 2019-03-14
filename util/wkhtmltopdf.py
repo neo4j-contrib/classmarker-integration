@@ -9,6 +9,7 @@ class WKhtmlToPdf(object):
 
     def __init__(self, *args, **kwargs):
         self.url = None
+        self.tmpurl = None
         self.output_file = None
 
         # get the url and output_file options

@@ -176,7 +176,7 @@ def send_swag_email(event, context):
         email_address = message["email"]
         swag_code = message["swag_code"]
 
-        email_title = "{0}, now you're a Neo4j Certified Professional - Get your t-shirt!".format(first_name)
+        email_title = "{0}, Get your t-shirt!".format(first_name)
 
         template_args = {"name": "{0} {1}".format(first_name, last_name), "swag_code": swag_code}
 
