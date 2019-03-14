@@ -25,7 +25,7 @@ class WKhtmlToPdf(object):
         if not output_path:
             self.output_file = os.path.join('/tmp', self.output_file)
 
-        self.params = ["-O Landscape"]
+        self.params = []
         self.screen_resolution = [1024, 768]
         self.color_depth = 24
 
@@ -35,7 +35,7 @@ class WKhtmlToPdf(object):
         """
 
         # execute the command
-        command = './binary/wkhtmltopdf %s "%s" "%s" >> /tmp/wkhtp.log' % (
+        command = './binary/wkhtmltopdf -O Landscape %s "%s" "%s" >> /tmp/wkhtp.log' % (
             " ".join([cmd for cmd in self.params]),
             self.url,
             self.output_file

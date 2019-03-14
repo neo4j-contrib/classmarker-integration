@@ -142,7 +142,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z/certification.zip"
+                "S3Key": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z/certification.zip"
               },
               "FunctionName": "GenerateCertificate",
               "Handler": "handler.generate_certificate",
@@ -165,14 +165,14 @@
               "GenerateDashcertificateLogGroup"
             ]
           },
-          "GenerateDashcertificateLambdaVersionTTN288McJEUhDMnEpY3HOrIIzbGawmcQEpjK6wVBs": {
+          "GenerateDashcertificateLambdaVersionmmsov1suh8s5Cb9OchZqF5dAQWx20Mr1sqYv2PWA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GenerateDashcertificateLambdaFunction"
               },
-              "CodeSha256": "5iuRo1/FNJ6FvTnO/k+GoB4EEyo/EDfTOjWDmBQC5jw="
+              "CodeSha256": "1MjeyiAW2jSllr26+tSMm/qD4kxzBIcnaNDbURVRJSs="
             }
           },
           "SendDashemailLambdaFunction": {
@@ -182,7 +182,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z/certification.zip"
+                "S3Key": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z/certification.zip"
               },
               "FunctionName": "SendEmail",
               "Handler": "handler.send_email",
@@ -205,14 +205,14 @@
               "SendDashemailLogGroup"
             ]
           },
-          "SendDashemailLambdaVersion8dt8MJ7KR71LCl4RLLJu66bkWyg03jbMn3OCzycXlg": {
+          "SendDashemailLambdaVersion7VUjwSMUC4G7Y1W2LNnfrV8wwpFhuiuxn6IcgHXNJs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SendDashemailLambdaFunction"
               },
-              "CodeSha256": "5iuRo1/FNJ6FvTnO/k+GoB4EEyo/EDfTOjWDmBQC5jw="
+              "CodeSha256": "1MjeyiAW2jSllr26+tSMm/qD4kxzBIcnaNDbURVRJSs="
             }
           },
           "GetDashemailLambdaFunction": {
@@ -222,7 +222,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z/certification.zip"
+                "S3Key": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z/certification.zip"
               },
               "FunctionName": "Auth0GetEmailFromUid",
               "Handler": "handler.get_email_lambda",
@@ -245,14 +245,14 @@
               "GetDashemailLogGroup"
             ]
           },
-          "GetDashemailLambdaVersiontR9KXv03AhHokpf2IzJytFGalbqGfPLfrPXbUoeAb1U": {
+          "GetDashemailLambdaVersionsoiwfZ7AUOZUNLo01Dw62gONaxpLGeoW5zyXLnoAos": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetDashemailLambdaFunction"
               },
-              "CodeSha256": "5iuRo1/FNJ6FvTnO/k+GoB4EEyo/EDfTOjWDmBQC5jw="
+              "CodeSha256": "1MjeyiAW2jSllr26+tSMm/qD4kxzBIcnaNDbURVRJSs="
             }
           },
           "FindDashpeopleDashneedingDashswagLambdaFunction": {
@@ -262,7 +262,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z/certification.zip"
+                "S3Key": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z/certification.zip"
               },
               "FunctionName": "FindPeopleNeedingSwag",
               "Handler": "handler.find_people_needing_swag",
@@ -285,14 +285,14 @@
               "FindDashpeopleDashneedingDashswagLogGroup"
             ]
           },
-          "FindDashpeopleDashneedingDashswagLambdaVersion6AaGbbpNaZDhJnXzvdj0ykWludPy1fGb9JPDny83M": {
+          "FindDashpeopleDashneedingDashswagLambdaVersionXCwSi65aNlv4uYrafLEzzwvIuUo90A2A97QFbruE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "FindDashpeopleDashneedingDashswagLambdaFunction"
               },
-              "CodeSha256": "5iuRo1/FNJ6FvTnO/k+GoB4EEyo/EDfTOjWDmBQC5jw="
+              "CodeSha256": "1MjeyiAW2jSllr26+tSMm/qD4kxzBIcnaNDbURVRJSs="
             }
           },
           "SendDashswagDashemailLambdaFunction": {
@@ -302,7 +302,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z/certification.zip"
+                "S3Key": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z/certification.zip"
               },
               "FunctionName": "SendSwagEmail",
               "Handler": "handler.send_swag_email",
@@ -325,14 +325,14 @@
               "SendDashswagDashemailLogGroup"
             ]
           },
-          "SendDashswagDashemailLambdaVersionOr9XCYDAnlL5vhV8CoSQp09PPlI6XbZ8c0bYu96A": {
+          "SendDashswagDashemailLambdaVersionWtpXG2UZJNDFrfcZ2MN4LbXXdeyn3RwyJlkvhUzzxI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SendDashswagDashemailLambdaFunction"
               },
-              "CodeSha256": "5iuRo1/FNJ6FvTnO/k+GoB4EEyo/EDfTOjWDmBQC5jw="
+              "CodeSha256": "1MjeyiAW2jSllr26+tSMm/qD4kxzBIcnaNDbURVRJSs="
             }
           },
           "FindDashpeopleDashneedingDashswagEventsRuleSchedule1": {
@@ -509,7 +509,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1552515505284": {
+          "ApiGatewayDeployment1552522302745": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -750,31 +750,31 @@
           "GenerateDashcertificateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GenerateDashcertificateLambdaVersionTTN288McJEUhDMnEpY3HOrIIzbGawmcQEpjK6wVBs"
+              "Ref": "GenerateDashcertificateLambdaVersionmmsov1suh8s5Cb9OchZqF5dAQWx20Mr1sqYv2PWA"
             }
           },
           "SendDashemailLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SendDashemailLambdaVersion8dt8MJ7KR71LCl4RLLJu66bkWyg03jbMn3OCzycXlg"
+              "Ref": "SendDashemailLambdaVersion7VUjwSMUC4G7Y1W2LNnfrV8wwpFhuiuxn6IcgHXNJs"
             }
           },
           "GetDashemailLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetDashemailLambdaVersiontR9KXv03AhHokpf2IzJytFGalbqGfPLfrPXbUoeAb1U"
+              "Ref": "GetDashemailLambdaVersionsoiwfZ7AUOZUNLo01Dw62gONaxpLGeoW5zyXLnoAos"
             }
           },
           "FindDashpeopleDashneedingDashswagLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "FindDashpeopleDashneedingDashswagLambdaVersion6AaGbbpNaZDhJnXzvdj0ykWludPy1fGb9JPDny83M"
+              "Ref": "FindDashpeopleDashneedingDashswagLambdaVersionXCwSi65aNlv4uYrafLEzzwvIuUo90A2A97QFbruE"
             }
           },
           "SendDashswagDashemailLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SendDashswagDashemailLambdaVersionOr9XCYDAnlL5vhV8CoSQp09PPlI6XbZ8c0bYu96A"
+              "Ref": "SendDashswagDashemailLambdaVersionWtpXG2UZJNDFrfcZ2MN4LbXXdeyn3RwyJlkvhUzzxI"
             }
           },
           "ServiceEndpoint": {
@@ -920,7 +920,7 @@
     "artifact": "/Users/administrator/repos/classmarker-integration/.serverless/certification.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/certification/dev/1552515504266-2019-03-13T22:18:24.266Z",
+    "artifactDirectoryName": "serverless/certification/dev/1552522301616-2019-03-14T00:11:41.616Z",
     "artifact": "certification.zip"
   }
 }
