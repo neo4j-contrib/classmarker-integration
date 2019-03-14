@@ -61,7 +61,7 @@ def generate(event):
             s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=html_location)
 
         local_pdf_file_name = "/tmp/{file_name}.pdf".format(file_name=user_id)
-        wkhtmltopdf(local_html_file_name, local_pdf_file_name)
+        wkhtmltopdfV2(local_html_file_name, local_pdf_file_name)
 
         pdf_location = generate_pdf_location(event)
 

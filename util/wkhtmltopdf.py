@@ -59,6 +59,6 @@ class WKhtmlToPdf(object):
             raise exc
 
 
-def wkhtmltopdf(*args, **kwargs):
+def wkhtmltopdfV2(*args, **kwargs):
     wkhp = WKhtmlToPdf(*args, **kwargs)
     wkhp.render()
