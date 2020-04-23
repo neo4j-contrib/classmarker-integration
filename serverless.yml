@@ -14,15 +14,16 @@ custom:
         - Ref: AWS::Region
         - Ref: AWS::AccountId
         - CertificatesToEmail
-  SwagTopic:
-    Fn::Join:
-      - ":"
-      - - arn
-        - aws
-        - sns
-        - Ref: AWS::Region
-        - Ref: AWS::AccountId
-        - SwagToEmail
+ # Elaine commented out to remove swag emails
+ # SwagTopic:
+ #   Fn::Join:
+ #     - ":"
+ #     - - arn
+ #      - aws
+ #       - sns
+ #       - Ref: AWS::Region
+ #       - Ref: AWS::AccountId
+ #       - SwagToEmail
   pythonRequirements:
     dockerizePip: non-linux
 
@@ -50,12 +51,13 @@ provider:
     - Effect: 'Allow'
       Action:
         - "sns:Publish"
-      Resource:
-        - ${self:custom.SwagTopic}
-    - Effect: Allow
-      Action:
-        - ses:SendEmail
-        - ses:SendRawEmail
+  # Elaine commented out to remove swag emails
+      #Resource:
+      #  - ${self:custom.SwagTopic}
+   # - Effect: Allow
+    #  Action:
+    #    - ses:SendEmail
+    #    - ses:SendRawEmail
       Resource: "arn:aws:ses:us-east-1:128916679330:identity/neo4j.com"
 
 plugins:
@@ -82,22 +84,22 @@ functions:
       role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
         - http: POST Auth0GetEmailFromUid
+# Elaine commented out to eliminate swag emails
+ # find-people-needing-swag:
+ #     name: FindPeopleNeedingSwag
+ #     handler: handler.find_people_needing_swag
+ #     role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+ #     events:
+ #      - schedule: rate(2 minutes)
 
-  find-people-needing-swag:
-      name: FindPeopleNeedingSwag
-      handler: handler.find_people_needing_swag
-      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
-      events:
-        - schedule: rate(2 minutes)
-
-  send-swag-email:
-      name: SendSwagEmail
-      handler: handler.send_swag_email
-      role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
-      events:
-        - sns:
-            topicName: SwagToEmail
-            displayName: Topic to email swag
+ # send-swag-email:
+ #     name: SendSwagEmail
+ #     handler: handler.send_swag_email
+ #     role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+ #     events:
+ #       - sns:
+ #           topicName: SwagToEmail
+ #           displayName: Topic to email swag
 
 package:
   exclude:

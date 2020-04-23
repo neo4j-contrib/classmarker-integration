@@ -91,8 +91,9 @@ def generate_certificate(request, context):
         print("Not generating certificate - did not pass!")
         certificate_path = None
     else:
-        print("Assigning swag code")
-        certification.assign_swag_code(db_driver, event.get('auth0_key'))
+   # Elaine commented out - no more swag
+   #  print("Assigning swag code")
+   #  certification.assign_swag_code(db_driver, event.get('auth0_key'))
 
         certificate_number = certification.generate_certificate_number(db_driver, event)[0]["certificate_number"]
         event["certificate_number"] = int(certificate_number)
@@ -145,6 +146,9 @@ def send_email(event, context):
         print(response)
 
 
+
+# Elaine commented out to remove swag emails
+'''
 def find_people_needing_swag(event, context):
     print(event)
 
@@ -184,3 +188,4 @@ def send_swag_email(event, context):
 
         response = email.send(email_address, email_client, email_title, template_args, template_html_obj, template_obj)
         print(response)
+'''

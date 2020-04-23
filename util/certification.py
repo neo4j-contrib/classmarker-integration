@@ -109,12 +109,14 @@ MERGE (src)-[:ISSUED_TO]->(u)
 """
 
 
+# Elaine commented out
+'''
 def assign_swag_code(db_driver, auth0_key):
     print(assign_swag_query)
     with db_driver.session() as session:
         results = session.run(assign_swag_query, parameters={"auth0_key": auth0_key})
         results.consume()
-
+'''
 
 unsent_swag_emails_query = """
 MATCH (u:User)<-[:ISSUED_TO]-(swag)
@@ -126,6 +128,8 @@ return u.first_name AS firstName, u.last_name AS lastName, swag.code AS swagCode
 """
 
 
+# Elaine commented out
+'''
 def find_unsent_swag_emails(db_driver):
     with db_driver.session() as session:
         results = session.run(unsent_swag_emails_query)
@@ -135,16 +139,18 @@ def find_unsent_swag_emails(db_driver):
                  "swag_code": record["swagCode"],
                  "email": record["email"]}
                 for record in results]
-
+'''
 
 mark_swag_email_sent_query = """
 MATCH (s:SwagRedemptionCode { code: {swag_code} })
 SET s.email_sent = true
 """
 
-
+# Elaine commented out
+'''
 def swag_email_sent(db_driver, swag_code):
     print("Marking swag email sent " + swag_code)
     with db_driver.session() as session:
         results = session.run(mark_swag_email_sent_query, parameters={"swag_code": swag_code})
         results.consume()
+'''
