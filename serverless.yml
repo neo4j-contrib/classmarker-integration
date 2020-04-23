@@ -88,7 +88,8 @@ functions:
       handler: handler.find_people_needing_swag
       role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
       events:
-        - schedule: rate(2 minutes)
+      # Elaine changed so swag emails are sent once a week (was 2 minutes)?
+        - schedule: rate(7 days)
 
   send-swag-email:
       name: SendSwagEmail

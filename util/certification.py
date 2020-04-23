@@ -108,7 +108,6 @@ LIMIT 1
 MERGE (src)-[:ISSUED_TO]->(u)
 """
 
-
 def assign_swag_code(db_driver, auth0_key):
     print(assign_swag_query)
     with db_driver.session() as session:
