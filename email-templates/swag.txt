@@ -2,10 +2,37 @@ Hi $name,
 
 Congratulations again on passing the Neo4j certification exam! You are now part of a select group of Neo4j experts.
 
-You can order your t-shirt and swag free of charge by visiting https://stores.kotisdesign.com/neocertified/$swag_code
+To ensure the on-going professional development of our Certified Professionals, we're hosting 8 hands-on, virtual, training sessions over the course of this year, at no cost to you. The trainings will be recorded and made available to you if you are unable to attend live.
 
-The t-shirt, laptop sticker, and shipping are free.  For international shipments, it is considered a gift.
-There is, however, still a chance that your customs service will ask you to pay duty on it as we send it from a commercial address.  You'll get a shipment notification when it goes out - it will usually include a tracking number.
+Links for the sessions will be published in the Certified Professional's private group (https://community.neo4j.com/g/Neo4jCertified) on the Neo4j Community Site (https://community.neo4j.com). ** Please note, access to the group is associated by the email address associated with your Neo4j Certification. If you have trouble accessing, please request membership into the group and provide your Neo4j Certification ID number.
+
+Save the dates:
+
+June 23: Cypher Query Tuning
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+June 24: Neo4j Graph Algorithms for Data Science
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 6: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 7: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 8: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 13: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 14: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+October 15: TBD
+10:00-14:00 EDT | 14:00-18:00 GMT
+
+Hungry for even more knowledge? Well, you now qualify to become a Neo4j Ninja (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), ou can get access to monthly advanced training, live demos, ask-me-anything sessions with Neo4j executive staff, collaborative peer reviews, and more!
 
 Cheers,
 Your Neo4j Developer Relations Team

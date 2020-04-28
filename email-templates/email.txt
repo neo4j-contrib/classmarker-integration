@@ -9,7 +9,7 @@ Don't forget to add your certificate to your LinkedIn profile. You can do that b
 You'll need to fill in the following details:
 Certification name: Neo4j Certified Professional
 Certification authority: Neo4j
-License number: $certificate_number
+Certificate number: $certificate_number
 Certification URL: $certificate
 
 Don't forget to check out our Neo4j Ninja Program (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), where we offer exclusive, advanced training and webinars to our Certified Developers.
