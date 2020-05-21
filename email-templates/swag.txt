@@ -9,28 +9,28 @@ Links for the sessions will be published in the Certified Professional's private
 Save the dates:
 
 June 23: Cypher Query Tuning
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 June 24: Neo4j Graph Algorithms for Data Science
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 6: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 7: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 8: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 13: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 14: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 October 15: TBD
-10:00-14:00 EDT | 14:00-18:00 GMT
+10:00-14:00 EDT | 14:00-18:00 UTC
 
 Hungry for even more knowledge? Well, you now qualify to become a Neo4j Ninja (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), ou can get access to monthly advanced training, live demos, ask-me-anything sessions with Neo4j executive staff, collaborative peer reviews, and more!
 
