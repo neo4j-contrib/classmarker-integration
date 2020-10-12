@@ -23,22 +23,20 @@ def generate(event):
 
     user_id = event["user_id"]
 
-    # 3.x certificate
-    if event.get('test_name_short') == "neo4j-3.x-certification_test":
-        with app.app_context():
-            with open("static/neo4j.png", "rb") as neo4j_image:
-                base_64_logo_image = base64.b64encode(neo4j_image.read())
-       
-            with open("static/certified-transparent-logo.png", "rb") as cert_image:
-                base_64_cert_image = base64.b64encode(cert_image.read())
+    with app.app_context():
+        with open("static/neo4j.png", "rb") as neo4j_image:
+            base_64_logo_image = base64.b64encode(neo4j_image.read())
 
-            with open("static/emil-signature.png", "rb") as sig_image:
-                base_64_sig_image = base64.b64encode(sig_image.read())
+        with open("static/certified-transparent-logo.png", "rb") as cert_image:
+            base_64_cert_image = base64.b64encode(cert_image.read())
 
-            with open("static/grid_graph.png", "rb") as bg_image:
-                base_64_bg_image = base64.b64encode(bg_image.read())
+        with open("static/emil-signature.png", "rb") as sig_image:
+            base_64_sig_image = base64.b64encode(sig_image.read())
 
-            rendered = render_template('certificate_new.html',
+        with open("static/grid_graph.png", "rb") as bg_image:
+            base_64_bg_image = base64.b64encode(bg_image.read())
+
+        rendered = render_template('certificate_new.html',
                                    base_64_logo_image=base_64_logo_image.decode("utf-8"),
                                    base_64_cert_image=base_64_cert_image.decode("utf-8"),
                                    base_64_sig_image=base_64_sig_image.decode("utf-8"),
@@ -52,36 +50,6 @@ def generate(event):
                                    date=event["date_formatted"]
                                    )
 
-    # 4.x certificate
-    if event.get('test_name_short') == "neo4j-4.x-certification_test":
-        with app.app_context():
-            with open("static/neo4j.png", "rb") as neo4j_image:
-                base_64_logo_image = base64.b64encode(neo4j_image.read())
-
-            with open("static/Neo4j4.0_certified_transparent.png", "rb") as cert_image:
-                base_64_cert_image = base64.b64encode(cert_image.read())
-
-            with open("static/emil-signature.png", "rb") as sig_image:
-                base_64_sig_image = base64.b64encode(sig_image.read())
-
-            with open("static/grid_graph.png", "rb") as bg_image:
-                base_64_bg_image = base64.b64encode(bg_image.read())
-
-            rendered = render_template('certificate_40.html',
-                                       base_64_logo_image=base_64_logo_image.decode("utf-8"),
-                                       base_64_cert_image=base_64_cert_image.decode("utf-8"),
-                                       base_64_sig_image=base_64_sig_image.decode("utf-8"),
-                                       base_64_bg_image=base_64_bg_image.decode("utf-8"),
-                                       name=event["name"],
-                                       test_name="Neo4j 4.0 Certified",
-                                       score_percentage=event["score_percentage"],
-                                       score_absolute=event["score_absolute"],
-                                       score_maximum=event["score_maximum"],
-                                       certificate_number=event["certificate_number"],
-                                       date=event["date_formatted"]
-                                       )
-
-        
         s3 = boto3.client('s3')
 
         local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
