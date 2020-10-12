@@ -1,7 +1,8 @@
 {
   "name": "classmarker-integration",
   "version": "1.0.0",
-  "description": "",
+  "license": "UNLICENSED",
+  "private": true,
   "main": "index.js",
   "dependencies": {
     "serverless": "^2.6.0",
