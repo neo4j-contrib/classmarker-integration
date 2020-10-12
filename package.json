@@ -1,0 +1,10 @@
+{
+  "name": "classmarker-integration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "serverless": "^2.6.0",
+    "serverless-python-requirements": "^5.1.0"
+  }
+}

@@ -1,4 +1,4 @@
-./node_modules/serverless/bin/serverless invoke local \
+serverless invoke local \
   --function generate-certificate \
   -d '{ "body": {
           "result": {
@@ -17,7 +17,7 @@ wkhtmltopdf /tmp/123456.html certificate.pdf &&
 open certificate.pdf
 
 
-./node_modules/serverless/bin/serverless invoke \
+serverless invoke \
   --function send-email \
   -d '{"Records": [
     {"EventSource": "aws:sns",
@@ -42,8 +42,5 @@ open certificate.pdf
          "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:715633473519:CertificatesToEmail:eac5c653-b5b5-4dce-9e3c-794debd7b007",
          "MessageAttributes": {}}}]}'
 
-
---data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"swag_code\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'
-
-
---data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"certificate\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'
+#--data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"swag_code\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'
+#--data '{"Records":[{"Sns": {"Message":"{\"last_name\": \"Needham\", \"first_name\": \"Mark\", \"certificate\": \"zyy7fwf6zqsvhihmvw4jha\"  }"}}]}'
