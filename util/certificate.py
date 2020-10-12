@@ -24,7 +24,7 @@ def generate(event):
     user_id = event["user_id"]
 
     # 3.x certificate
-    if event.get('test_name_short') = "neo4j-3.x-certification_test":
+    if event.get('test_name_short') == "neo4j-3.x-certification_test":
     with app.app_context():
         with open("static/neo4j.png", "rb") as neo4j_image:
             base_64_logo_image = base64.b64encode(neo4j_image.read())
@@ -53,7 +53,7 @@ def generate(event):
                                    )
 
     # 4.x certificate
-    if event.get('test_name_short') = "neo4j-4.x-certification_test":
+    if event.get('test_name_short') == "neo4j-4.x-certification_test":
         with app.app_context():
             with open("static/neo4j.png", "rb") as neo4j_image:
                 base_64_logo_image = base64.b64encode(neo4j_image.read())
