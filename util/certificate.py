@@ -33,7 +33,7 @@ def generate(event):
                 base_64_cert_image = base64.b64encode(cert_image.read())
 
             with open("static/emil-signature.png", "rb") as sig_image:
-              base_64_sig_image = base64.b64encode(sig_image.read())
+                base_64_sig_image = base64.b64encode(sig_image.read())
 
             with open("static/grid_graph.png", "rb") as bg_image:
                 base_64_bg_image = base64.b64encode(bg_image.read())
