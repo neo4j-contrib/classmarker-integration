@@ -91,8 +91,9 @@ def generate_certificate(request, context):
         print("Not generating certificate - did not pass!")
         certificate_path = None
     else:
-        print("Assigning swag code")
-        certification.assign_swag_code(db_driver, event.get('auth0_key'))
+        if event.get('test_name_short') == "neo4-3.x-certification_test":
+            print("Assigning swag code")
+            certification.assign_swag_code(db_driver, event.get('auth0_key'))
 
         certificate_number = certification.generate_certificate_number(db_driver, event)[0]["certificate_number"]
         event["certificate_number"] = int(certificate_number)
@@ -125,9 +126,14 @@ def send_email(event, context):
     s3 = boto3.client('s3')
     email_client = boto3.client('ses')
 
-    email_title = 'Congratulations! You are now a Neo4j Certified Professional'
-    template_name = 'email'
+    if event.get('test_name_short') == "neo4j-3.x-certification_test": 
+        email_title = 'Congratulations! You are now a Neo4j Certified Professional'
+        template_name = 'email'
 
+    if event.get('test_name_short') == "neo4j-4.x-certification_test": 
+        email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
+        template_name = 'email_40'
+    
     template_obj = email.plain_text_template(s3, template_name)
     template_html_obj = email.html_template(s3, template_name)
 
