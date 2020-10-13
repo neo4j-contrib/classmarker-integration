@@ -80,27 +80,26 @@ def generate(event):
                                        certificate_number=event["certificate_number"],
                                        date=event["date_formatted"]
                                        )
-
         
-        s3 = boto3.client('s3')
+    s3 = boto3.client('s3')
 
-        local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
-        with open(local_html_file_name, "wb") as file:
-            file.write(rendered.encode('utf-8'))
+    local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
+    with open(local_html_file_name, "wb") as file:
+        file.write(rendered.encode('utf-8'))
 
-        html_location = generate_html_location(event)
-        with open(local_html_file_name, 'rb') as data:
-            s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=html_location)
+    html_location = generate_html_location(event)
+    with open(local_html_file_name, 'rb') as data:
+        s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=html_location)
 
-        local_pdf_file_name = "/tmp/{file_name}.pdf".format(file_name=user_id)
-        wkhtmltopdfV2(local_html_file_name, local_pdf_file_name)
+    local_pdf_file_name = "/tmp/{file_name}.pdf".format(file_name=user_id)
+    wkhtmltopdfV2(local_html_file_name, local_pdf_file_name)
 
-        pdf_location = generate_pdf_location(event)
+    pdf_location = generate_pdf_location(event)
 
-        with open(local_pdf_file_name, 'rb') as data:
-            s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=pdf_location)
+    with open(local_pdf_file_name, 'rb') as data:
+        s3.put_object(ACL="public-read", Body=data, Bucket=BUCKET_NAME, Key=pdf_location)
 
-        return "https://{bucket_name}/{pdf_location}".format(bucket_name=BUCKET_NAME,
+    return "https://{bucket_name}/{pdf_location}".format(bucket_name=BUCKET_NAME,
                                                              pdf_location=pdf_location)
 
 
