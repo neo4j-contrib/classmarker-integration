@@ -91,7 +91,7 @@ def generate_certificate(request, context):
         print("Not generating certificate - did not pass!")
         certificate_path = None
     else:
-        if event.get('test_name_short') == "neo4j-3.x-certification_test": 
+        if event.get('test_name_short') == "neo4-3.x-certification_test":
             print("Assigning swag code")
             certification.assign_swag_code(db_driver, event.get('auth0_key'))
 
