@@ -126,11 +126,10 @@ def send_email(event, context):
     s3 = boto3.client('s3')
     email_client = boto3.client('ses')
 
-    if event.get('test_name_short') == "neo4j-3.x-certification_test": 
-        email_title = 'Congratulations! You are now a Neo4j Certified Professional'
-        template_name = 'email'
+    email_title = 'Congratulations! You are now a Neo4j Certified Professional'
+    template_name = 'email'
 
-    if event.get('test_name_short') == "neo4j-4.x-certification_test": 
+    if event.get('test_name_short') == 'neo4-4.x-certification_test':
         email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
         template_name = 'email_40'
     
