@@ -23,6 +23,9 @@ def generate(event):
 
     user_id = event["user_id"]
 
+    if event.get('test_name_short') == "Sample Link Name":
+        return "Test OK"
+        
     # 3.x certificate
     if event.get('test_name_short') == "neo4-3.x-certification-test":
         with app.app_context():
