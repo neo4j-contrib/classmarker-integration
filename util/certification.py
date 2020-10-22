@@ -147,3 +147,21 @@ def swag_email_sent(db_driver, swag_code):
     with db_driver.session() as session:
         results = session.run(mark_swag_email_sent_query, parameters={"swag_code": swag_code})
         results.consume()
+
+
+# Added for 4.x Certificate processing; check if user is certified
+
+check_certified_query = """
+MATCH (u:User)<-[:TOOK]-(c:Certification)
+WHERE exists(u.auth0_key)
+AND u.auth0_key = $auth0_key 
+AND c.name = "neo4-3.x-certification-test"
+AND c.passed = true
+return count(c)
+"""
+
+def check_certified(db_driver,auth0_key):
+    print(check_certified)
+    with db_driver.session() as session:
+        results = session.run(check_certified_query, parameters={"auth0_key": auth0_key})
+        return [{"certified": record["certified"]} for record in results]
