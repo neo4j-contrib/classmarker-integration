@@ -157,11 +157,15 @@ WHERE exists(u.auth0_key)
 AND u.auth0_key = $auth0_key 
 AND c.name = "neo4-3.x-certification-test"
 AND c.passed = true
-return count(c)
+return c
 """
 
 def check_certified(db_driver,auth0_key):
     print(check_certified)
+    certified = False
     with db_driver.session() as session:
         results = session.run(check_certified_query, parameters={"auth0_key": auth0_key})
-        return [{"certified": record["certified"]} for record in results]
+        for record in results:
+            certified = True
+    return certified
+

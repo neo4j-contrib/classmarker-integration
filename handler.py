@@ -190,3 +190,14 @@ def send_swag_email(event, context):
 
         response = email.send(email_address, email_client, email_title, template_args, template_html_obj, template_obj)
         print(response)
+
+# Added for 4.x Certification
+# Need to check if 3.x certified
+
+def check_certified(event, context):
+
+    certified = check_certified(db_driver,event['auth0_key'])
+
+    return certified
+
+
