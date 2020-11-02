@@ -196,7 +196,7 @@ def send_swag_email(event, context):
 
 def check_certified(event, context):
 
-    certified = check_certified(db_driver,event['auth0_key'])
+    certified = certification.check_certified(db_driver,event['auth0_key'])
 
     return certified
 

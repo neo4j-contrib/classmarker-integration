@@ -98,6 +98,13 @@ functions:
             topicName: SwagToEmail
             displayName: Topic to email swag
 
+  check-certified:
+    name: CheckCertified
+    handler: handler.check_certified
+    role: 'arn:aws:iam::715633473519:role/lambda_graphacademy'
+    events:
+      - http: GET CheckCertified
+
 package:
   exclude:
     - node_modules/**
