@@ -2,37 +2,12 @@ Hi $name,
 
 Congratulations again on passing the Neo4j certification exam! You are now part of a select group of Neo4j experts.
 
-To ensure the on-going professional development of our Certified Professionals, we're hosting 8 hands-on, virtual, training sessions over the course of this year, at no cost to you. The trainings will be recorded and made available to you if you are unable to attend live.
+To ensure the on-going professional development of our Certified Professionals, we offer 7 free, hands-on, virtual, training sessions recorded this year.
+Links for the sessions are  published in the Certified Professional's private group on the Neo4j Community Site (https://community.neo4j.com/t/access-to-hands-on-advanced-training-sessions/17487).
 
-Links for the sessions will be published in the Certified Professional's private group (https://community.neo4j.com/g/Neo4jCertified) on the Neo4j Community Site (https://community.neo4j.com). ** Please note, access to the group is associated by the email address associated with your Neo4j Certification. If you have trouble accessing, please request membership into the group and provide your Neo4j Certification ID number.
+Please note, access to the group is associated by the email address associated with your Neo4j Certification. If you have trouble accessing, please request membership into the group and provide your Neo4j Certification ID number.
 
-Save the dates:
-
-June 23: Cypher Query Tuning
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-June 24: Neo4j Graph Algorithms for Data Science
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 6: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 7: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 8: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 13: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 14: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-October 15: TBD
-10:00-14:00 EDT | 14:00-18:00 UTC
-
-Hungry for even more knowledge? Well, you now qualify to become a Neo4j Ninja (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), ou can get access to monthly advanced training, live demos, ask-me-anything sessions with Neo4j executive staff, collaborative peer reviews, and more!
+Hungry for even more knowledge? Well, you now qualify to become a Neo4j Ninja (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), you can get access to monthly advanced training, live demos, ask-me-anything sessions with Neo4j executive staff, collaborative peer reviews, and more!
 
 Cheers,
 Your Neo4j Developer Relations Team
