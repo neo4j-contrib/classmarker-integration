@@ -195,7 +195,7 @@ def send_swag_email(event, context):
 # Need to check if 3.x certified
 
 def check_certified(event, context):
-    print("event", event)
-    certified = certification.check_certified(db_driver,event['auth0_key'])
+    auth0_key = event["multiValueQueryStringParameters"]["auth0_key"][0]
+    certified = certification.check_certified(db_driver,auth0_key)
 
     return certified
