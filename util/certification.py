@@ -6,7 +6,7 @@ SET u.email = coalesce(u.email, {email}),
     u.first_name = coalesce(u.first_name, {given_name}),
     u.last_name=coalesce(u.last_name, {family_name})
 MERGE (e:Exam {id: [{auth0_key}, toString({test_id}), toString({date})] })
-ON CREATE SET 
+ON CREATE SET
     e:Certification,
     e.finished={date},
     e.percent={score_percentage},
@@ -53,12 +53,12 @@ def record_attempt(db_driver, event):
 
 
 certificate_number_query = """\
-MATCH (c:Certification) 
+MATCH (c:Certification)
 WITH max(c.certificateNumber) AS maxCertificateNumber
 WITH maxCertificateNumber + round(rand() * 150) AS certificateNumber
 MATCH (e:Exam {id: [{auth0_key}, {test_id}, {date}] })
 SET e.certificateNumber = coalesce(e.certificateNumber, certificateNumber)
-RETURN e.certificateNumber AS certificateNumber  
+RETURN e.certificateNumber AS certificateNumber
 """
 
 
@@ -75,7 +75,7 @@ def generate_certificate_number(db_driver, event):
 
 record_certificate_query = """\
 MATCH (e:Exam {id: [{auth0_key}, {test_id}, {date}] })
-SET e.certificatePath = {certificate}  
+SET e.certificatePath = {certificate}
 """
 
 
@@ -117,7 +117,7 @@ def assign_swag_code(db_driver, auth0_key):
 
 unsent_swag_emails_query = """
 MATCH (u:User)<-[:ISSUED_TO]-(swag)
-where exists(u.auth0_key) 
+where exists(u.auth0_key)
 AND exists(u.first_name)
 AND exists(u.last_name)
 AND not exists(swag.email_sent)
@@ -154,18 +154,16 @@ def swag_email_sent(db_driver, swag_code):
 check_certified_query = """
 MATCH (u:User)<-[:TOOK]-(c:Certification)
 WHERE exists(u.auth0_key)
-AND u.auth0_key = $auth0_key 
+AND u.auth0_key = $auth0_key
 AND c.name = "neo4-3.x-certification-test"
 AND c.passed = true
 return c
 """
 
 def check_certified(db_driver,auth0_key):
-    print(check_certified)
     certified = False
     with db_driver.session() as session:
         results = session.run(check_certified_query, parameters={"auth0_key": auth0_key})
         for record in results:
             certified = True
     return certified
-
