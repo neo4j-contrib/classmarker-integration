@@ -132,7 +132,7 @@ def send_email(event, context):
     if event.get('test_name_short') == 'neo4-4.x-certification-test':
         email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
         template_name = 'email_40'
-    
+
     template_obj = email.plain_text_template(s3, template_name)
     template_html_obj = email.html_template(s3, template_name)
 
@@ -195,9 +195,7 @@ def send_swag_email(event, context):
 # Need to check if 3.x certified
 
 def check_certified(event, context):
-
+    print("event", event)
     certified = certification.check_certified(db_driver,event['auth0_key'])
 
     return certified
-
-
