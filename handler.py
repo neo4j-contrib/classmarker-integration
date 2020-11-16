@@ -200,4 +200,7 @@ def check_certified(event, context):
     print("auth0_key", auth0_key)
     certified = certification.check_certified(db_driver,auth0_key)
 
-    return {"statusCode": 200, "body": certified, "headers": {}}
+    return {"statusCode": 200, "body": certified, "headers": {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': "true",
+    }}
