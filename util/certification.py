@@ -152,7 +152,7 @@ def swag_email_sent(db_driver, swag_code):
 # Added for 4.x Certificate processing; check if user is certified
 
 check_certified_query = """
-MATCH (u:User)<-[:TOOK]-(c:Certification)
+MATCH (u:User)-[:TOOK]->(c:Certification)
 WHERE exists(u.auth0_key)
 AND u.auth0_key = $auth0_key
 AND c.name = "neo4-3.x-certification-test"
