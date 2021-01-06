@@ -12,7 +12,7 @@ Certification authority: Neo4j
 Certificate number: $certificate_number
 Certification URL: $certificate
 
-Don't forget to check out our Neo4j Ninja Program (https://medium.com/neo4j/so-you-want-to-become-a-neo4j-ninja-c14a9c296713), where we offer exclusive, advanced training and webinars to our Certified Developers.
+Don't forget to check out our Neo4j Ninja Program (http://community.neo4j.com/ninja-program), where we offer exclusive, advanced training and webinars to our Certified Developers.
 
 Cheers,
 Your Neo4j Developer Relations Team
