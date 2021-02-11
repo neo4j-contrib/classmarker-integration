@@ -1,0 +1,19 @@
+Hi $name,
+
+Congratulations on passing the Neo4j Graph Data Science Certification exam!
+
+You can download your certificate at: $certificate
+
+Don't forget to add your certificate to your LinkedIn profile. You can do that by visiting https://www.linkedin.com/profile/add?startTask=Neo4j+4.0+Certified
+
+You'll need to fill in the following details:
+Certification name: Neo4j Graph Data Science Certified
+Certification authority: Neo4j
+Certificate number: $certificate_number
+Certification URL: $certificate
+
+Don't forget to check out our Neo4j Ninja Program (http://community.neo4j.com/ninja-program), where we offer exclusive, advanced training and webinars to our Certified Developers.
+
+Cheers,
+Your Neo4j Developer Relations Team
+devrel@neo4j.com

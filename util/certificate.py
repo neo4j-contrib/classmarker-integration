@@ -83,7 +83,36 @@ def generate(event):
                                        certificate_number=event["certificate_number"],
                                        date=event["date_formatted"]
                                        )
-        
+
+    # Graph Data Science certificate
+    if event.get('test_name_short') == "neo4j-gds-test":
+        with app.app_context():
+            with open("static/neo4j.png", "rb") as neo4j_image:
+                base_64_logo_image = base64.b64encode(neo4j_image.read())
+
+            with open("static/Neo4j_GDS.png", "rb") as cert_image:
+                base_64_cert_image = base64.b64encode(cert_image.read())
+
+            with open("static/emil-signature.png", "rb") as sig_image:
+                base_64_sig_image = base64.b64encode(sig_image.read())
+
+            with open("static/grid_graph.png", "rb") as bg_image:
+                base_64_bg_image = base64.b64encode(bg_image.read())
+
+            rendered = render_template('certificate_gds.html',
+                                       base_64_logo_image=base_64_logo_image.decode("utf-8"),
+                                       base_64_cert_image=base_64_cert_image.decode("utf-8"),
+                                       base_64_sig_image=base_64_sig_image.decode("utf-8"),
+                                       base_64_bg_image=base_64_bg_image.decode("utf-8"),
+                                       name=event["name"],
+                                       test_name="Neo4j Graph Data Science Certified",
+                                       score_percentage=event["score_percentage"],
+                                       score_absolute=event["score_absolute"],
+                                       score_maximum=event["score_maximum"],
+                                       certificate_number=event["certificate_number"],
+                                       date=event["date_formatted"]
+                                       )
+
     s3 = boto3.client('s3')
 
     local_html_file_name = "/tmp/{file_name}.html".format(file_name=user_id)
