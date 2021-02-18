@@ -133,7 +133,7 @@ def send_email(event, context):
         email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
         template_name = 'email_40'
 
-    if event.get('test_name_short') == 'neo4j-gds-test':
+    elif event.get('test_name_short') == 'neo4j-gds-test':
         email_title = 'Congratulations! You are now Neo4j Graph Data Science Certified'
         template_name = 'email_gds'
 
