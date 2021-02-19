@@ -126,22 +126,22 @@ def send_email(event, context):
     s3 = boto3.client('s3')
     email_client = boto3.client('ses')
 
-    email_title = 'Congratulations! You are now a Neo4j Certified Professional'
-    template_name = 'email'
-
-    if event.get('test_name_short') == 'neo4-4.x-certification-test':
-        email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
-        template_name = 'email_40'
-
-    elif event.get('test_name_short') == 'neo4j-gds-test':
-        email_title = 'Congratulations! You are now Neo4j Graph Data Science Certified'
-        template_name = 'email_gds'
-
-    template_obj = email.plain_text_template(s3, template_name)
-    template_html_obj = email.html_template(s3, template_name)
-
     for record in event["Records"]:
         message = json.loads(record["Sns"]["Message"])
+        test_name_short =  message['test_name_short'] if 'test_name_short' in message else ""
+        email_title = 'Congratulations! You are now a Neo4j Certified Professional'
+        template_name = 'email'
+    
+        if test_name_short == 'neo4-4.x-certification-test':
+            email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
+            template_name = 'email_40'
+
+        elif test_name_short == 'neo4j-gds-test':
+            email_title = 'Congratulations! You are now Neo4j Graph Data Science Certified'
+            template_name = 'email_gds'
+
+        template_obj = email.plain_text_template(s3, template_name)
+        template_html_obj = email.html_template(s3, template_name)
 
         name = message["name"]
         email_address = message["email"]
