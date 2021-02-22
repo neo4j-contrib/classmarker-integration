@@ -132,7 +132,7 @@ def send_email(event, context):
         email_title = 'Congratulations! You are now a Neo4j Certified Professional'
         template_name = 'email'
     
-        if test_name_short == 'neo4-4.x-certification-test':
+        if test_name_short == 'neo4j-4.x-certification-test':
             email_title = 'Congratulations! You are now Neo4j 4.0 Certified'
             template_name = 'email_40'
 
