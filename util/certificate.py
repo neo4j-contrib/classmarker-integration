@@ -26,8 +26,8 @@ def generate(event):
     if event.get('test_name_short') == "Sample Link Name":
         return "Test OK: " + event.get('test_name')
         
-    # 3.x certificate
-    if event.get('test_name_short') == "neo4-3.x-certification-test":
+    # Certified Professional
+    if event.get('test_name_short') == "neo4-3.x-certification-test" or event.get('test_name_short') == "neo4j-certified-professional":
         with app.app_context():
             with open("static/neo4j.png", "rb") as neo4j_image:
                 base_64_logo_image = base64.b64encode(neo4j_image.read())
