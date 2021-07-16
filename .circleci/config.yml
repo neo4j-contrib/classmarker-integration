@@ -11,7 +11,7 @@ jobs:
       - run: chmod u+x nodesource_setup.sh && sudo ./nodesource_setup.sh
       - run: sudo apt-get update && sudo apt-get install -y awscli build-essential nodejs
       - run: npm install
-#      - run: aws --region eu-west-1 s3 sync email-templates/ s3://training-certificate-emails.neo4j.com --delete --acl "public-read"
+      - run: aws --region eu-west-1 s3 sync email-templates/ s3://training-certificate-emails.neo4j.com --delete --acl "public-read"
       - run: echo $ENV_YAML | base64 --decode --ignore-garbage > ~/circleci-gh-pages/env.yml
       - run: node ./node_modules/serverless/bin/serverless.js deploy
 
