@@ -4,6 +4,10 @@ Congratulations on passing the Neo4j certification exam! You are now a Neo4j Cer
 
 You can download your certificate at: $certificate
 
+Here is a link where you can order your free t-shirt. Please note that you must log in with the same email you used when you registered for the certification exam.
+
+https://neo4j-proshirts.web.app/
+
 Don't forget to add your certificate to your LinkedIn profile. You can do that by visiting https://www.linkedin.com/profile/add?startTask=Neo4j+Certified+Professional
 
 You'll need to fill in the following details:
