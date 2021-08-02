@@ -4,7 +4,7 @@ Congratulations on passing the Neo4j certification exam! You are now a Neo4j Cer
 
 You can download your certificate at: $certificate
 
-Here is a link where you can order your free t-shirt. Please note that you must log in with the same email you used when you registered for the certification exam.
+Here is a link where you can order your free t-shirt. Please note that you must log in with the same credentials you used when you registered for the certification exam.
 
 https://neo4j-proshirts.web.app/
 
